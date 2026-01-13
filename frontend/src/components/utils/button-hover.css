@@ -1,0 +1,12 @@
+.button-hover-outer {
+    border: 3px dotted green;
+    box-sizing: border-box;
+    border-radius: 20px;
+    
+}
+
+.button-hover-inner {
+    border: 3px dotted yellow;
+    box-sizing: border-box;
+    height: fit-content;
+}

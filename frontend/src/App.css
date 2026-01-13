@@ -1,0 +1,99 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+#back-home-button {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  background-color: #646cff;
+  font-weight: bold;
+  width: 15vw;
+  height: 45px;
+  max-width: 125px;
+  animation: fadeIn 0.3s ease-in-out;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#back-home-button:hover {
+   background-color: hsl(237, 100%, 78%);
+}
+
+.home-page {
+  animation: fadeIn 0.3s ease-in-out;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  height: 100vh;
+}
+
+.home-page h1, .home-page h3 {
+  margin: 2px;
+}
+
+.play-button {
+  border-radius: 35px;
+  width: 45vw;
+  height: 70px;
+  min-width: 125px;
+  max-width: 330px;
+  margin: 15px;
+  font-weight: bolder;
+  border: 2px solid white;
+  box-sizing: border-box;
+  transition: all 0.1s ease;
+  box-shadow: 0px 8px 0px rgb(223, 223, 223);
+}
+
+.play-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 8px 0px #646cff;
+}
+
+.play-button:active {
+  border-color: #646cff;
+  box-shadow: 0px 0px;
+  translate: 0px 8px;
+}
+
+
+.instructions {
+  border: 3px solid grey;
+  border-radius: 25px;
+  padding: 50px 30px;
+  box-sizing: border-box;
+  width: 400px;
+  margin-top: 50px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

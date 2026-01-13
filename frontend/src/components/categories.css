@@ -1,0 +1,31 @@
+.category-card {
+    border: 3px solid rgb(255, 94, 94);
+    border-radius: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    text-decoration: none;
+    gap: 5px;
+    height: 110px;
+    animation: fadeIn 0.3s ease;
+}
+
+.category-card .name {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.category-card .source {
+    font-size: smaller;
+    font-style: italic;
+    font-weight: lighter;
+    color: hsl(0, 0%, 80%);
+}
+
+.category-card:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: all 0.3ms;
+}

@@ -1,0 +1,332 @@
+.top-answers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+}
+
+.top-answers .container {
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.top-answers-element {
+    border-radius: 5px;
+    background-color: rgb(228, 228, 228);
+    box-shadow:0px 5px rgb(172, 172, 172);
+    color: black;
+    font-weight: bold;
+    margin: 5px;
+    display: grid;
+    grid-template-columns: 6fr 1fr;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+
+.top-answers-element .name, .top-answers-element .rank {
+    display: flex;
+    align-items: center;
+}
+
+.top-answers-element .rank {
+    justify-content: right;
+}
+
+.teams-container {
+    display: flex;
+    width: 90vw;
+    gap: 15px;
+    justify-items: center;
+    justify-content: center;
+    animation: fadeIn 0.5s ease-in-out;
+    margin-top: 35px;
+}
+
+.team-card {
+    border: 3px solid white;
+    border-radius: 15px;
+    padding: 0px 10px;
+    width: 100%;
+    max-width: 500px;
+    transition: all 0.3s ease-in-out;
+    margin-top: 15px;
+    background-color: rgb(56, 56, 56);
+}
+
+.team-card .score {
+    font-weight: bolder;
+    font-size: xx-large;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.current-team {
+    border-color: #646cff;
+    transform: scale(1.1);
+    margin: 0px 15px;
+    box-shadow: 0px 0px 8px hsl(237, 100%, 80%);
+}
+
+.winning-team {
+    border-color: goldenrod;
+    transform: scale(1.05);
+    margin: 0px 15px;
+    box-shadow: 0px 0px 20px goldenrod
+}
+
+.winning-team .score {
+    color: gold;
+}
+
+.screen {
+    box-sizing: border-box;
+    width: 90vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-height: 100vh;
+    padding: 60px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-screen {
+    animation: fadeIn 0.1s ease-in;
+    margin-top: 30px;
+    min-height: 100vh;
+}
+
+.guesses-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-screen button {
+    border-radius: 35px;
+    width: 25vw;
+    height: 60px;
+    min-width: 60px;
+    max-width: 300px;
+    margin: 15px;
+    font-weight: bold;
+    border: 2px solid white;
+    box-sizing: border-box;
+    transition: all 0.1s ease;
+    box-shadow: 0px 8px 0px rgb(223, 223, 223);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-screen button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 0px #646cff;
+    border-color: #646cff;
+}
+
+.game-screen button:active {
+    border-color: #646cff;
+    box-shadow: 0px 0px;
+    translate: 0px 8px;
+}
+
+.select-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.select-options :not(.start-game-button) {
+    font-weight: bold;
+    font-size: large;
+}
+
+.num-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.num-select {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    padding: 0px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.icon:hover {
+    transform: scale(1.02);
+    color: gold;
+}
+
+.icon:active {
+    transform: scale(0.90);
+    color: hsl(51, 100%, 60%);
+}
+
+.num {
+    width: 4vw;
+    max-width: 50px;
+    padding: 5px;
+    background-color: rgb(88, 88, 88);
+    border-radius: 5px;
+}
+
+.game-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+    font-size: x-large;
+    padding: 20px;
+    border:3px solid rgb(150, 150, 150);
+    border-radius: 25px;
+}
+
+.guess-remaining {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: large;
+}
+
+.category .title {
+    margin: 15px 0px;
+    font-size: xx-large;
+}
+
+.category .source, .category .updated {
+    font-size: medium;
+    font-style: italic;
+    color: hsl(0, 0%, 53%);
+}
+
+.category .updated {
+    margin-bottom: 30px;
+}
+
+.rounds {
+    font-size: large;
+}
+
+#submit-guess {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 25px 0px;
+}
+
+#enter-guess-button {
+    width: 100px;
+    height: 40px;
+    box-shadow: 0px 4px 0px;
+}
+
+#enter-guess-button:hover {
+    width: 100px;
+    height: 40px;
+    box-shadow: 0px 4px 0px #646cff;
+}
+
+#submit-guess input {
+    border: 2px solid white;
+    width: 35vw;
+    max-width: 500px;
+    height: 50px;
+    padding: 0px 10px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: all 0.1s ease;
+    margin-bottom: -10px;
+}
+
+#submit-guess label {
+    font-size: large;
+    font-weight: bold;
+}
+
+.error-msg {
+    color: rgb(255, 72, 72);
+    font-weight: bold;
+    animation: shake 0.1s ease-in-out 0s 3 alternate none;
+}
+
+@keyframes shake {
+    from {
+        transform: translateX(-5px);
+    } to {
+        transform: translateX(5px);
+    }
+    
+}
+
+#input-error input {
+    border-color: rgb(255, 72, 72);
+}
+
+.hints {
+    border: 3px solid rgb(151, 151, 151);
+    font-size: larger;
+    margin-top: 15px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    max-width: 600px;
+    scale: 0.9;
+}
+
+.hints p {
+    margin: 5px 0px;
+}
+
+.hints .subtitle {
+    font-weight: bold;
+    margin-top: 35px;
+}
+
+.hints #section-title {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.hints .example {
+    color: rgb(255, 138, 138);
+}
+
+.select-and-hints {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 50px;
+}
+

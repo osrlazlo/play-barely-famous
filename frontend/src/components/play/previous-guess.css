@@ -1,0 +1,67 @@
+.previous-guess {
+    border-radius: 15px;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: 6fr 2fr;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 15px;
+    box-shadow:0px 8px hsl(0, 0%, 70%);
+    animation: addGuess 0.4s ease-in-out;
+}
+
+@keyframes addGuess {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.previous-guess .guess-trophy-icon {
+    color: white;
+}
+
+.guess, .points {
+    width: 100%;
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.valid-guess {
+    background-color: rgb(255, 255, 255);
+    color: green;
+}
+
+.invalid-guess {
+    background-color: rgb(255, 255, 255);
+    color: red;
+}
+
+.golden-guess {
+    background-color: gold;
+    box-shadow:0px 8px goldenrod;
+    color: black;
+}
+
+.guess-trophy-icon {
+    font-size: xx-large;
+    display: flex;
+    justify-content: right;
+}
+
+.golden-guess .guess-trophy-icon {
+    color: hsl(43, 74%, 58%);
+    filter: drop-shadow(1px 1px black);
+}
+
+
