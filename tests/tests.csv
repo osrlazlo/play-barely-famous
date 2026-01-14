@@ -7,7 +7,7 @@ testNum,str1,str2,expectedResult
 6,wakanda forever,Beauty and the Beast,FALSE
 7,civil war,Avatar: The Way of Water,FALSE
 8,way,Avatar: Way of the Water,FALSE
-9,way of the water,Avatar: Way of the Water,TRUE
+9,the way of water,Avatar: The Way of Water,TRUE
 10,as,Avatar: Fire and Ash,FALSE
 11,fire and ash,Avatar: Fire and Ash,TRUE
 12,jamorant,Ja Morant,TRUE
@@ -34,7 +34,7 @@ testNum,str1,str2,expectedResult
 33,procter gamble,Procter & Gamble,TRUE
 34,guardians of the galaxy 2,Guardians of the Galaxy Vol. 2,TRUE
 35,secrt lif of pts,The Secret Life of Pets,TRUE
-36,way water,Avatar: Way of the Water,TRUE
+36,way water,Avatar: Way of the Water,FALSE
 37,maverick,Top Gun: Maverick,TRUE
 38,iron man 2,Iron Man 3,FALSE
 39,san fransisco,San Francisco,TRUE
@@ -46,7 +46,7 @@ testNum,str1,str2,expectedResult
 45,londn,London,TRUE
 46,bejing,Beijing,TRUE
 47,sydny,Sydney,TRUE
-48,elon mk,Elon Musk,TRUE
+48,elon mk,Elon Musk,FALSE
 49,brack obam,Barack Obama,TRUE
 50,lebron ames,LeBron James,TRUE
 51,cristano ronaldo,Cristiano Ronaldo,TRUE
@@ -57,16 +57,16 @@ testNum,str1,str2,expectedResult
 56,jef bezo,Jeff Bezos,TRUE
 57,bil gate,Bill Gates,TRUE
 58,warren bufet,Warren Buffett,TRUE
-59,ike,Nike,TRUE
+59,ike,Nike,FALSE
 60,adida,Adidas,TRUE
 61,mcdonalds,McDonald's,TRUE
 62,starbuck,Starbucks,TRUE
 63,almart,Walmart,TRUE
 64,amzon,Amazon,TRUE
 65,gogle,Google,TRUE
-66,pple,Apple,TRUE
+66,pple,Apple,FALSE
 67,tsla,Tesla,TRUE
-68,ord,Ford,TRUE
+68,ord,Ford,FALSE
 69,tyota,Toyota,TRUE
 70,chevroet,Chevrolet,TRUE
 71,mercedesbenz,Mercedes-Benz,TRUE
@@ -282,3 +282,9 @@ testNum,str1,str2,expectedResult
 281,star wars episode 4,Star Wars: Episode IV - A New Hope,TRUE
 282,star wars episode 6,Star Wars: Episode VI - Return of the Jedi,TRUE
 283,star wars episode 5,Star Wars: Episode V - The Empire Strikes Back,TRUE
+284,iron man 2,Moana 2,FALSE
+285,loreal,L'Oréal,TRUE
+286,wolf of walstreet,wolf of wallstreet,TRUE
+287,black panther wakanda forever,balck panther,FALSE
+288,black panther,Black Panther: Wakanda Forever,FALSE
+,ragnarik,Thor: Ragnarok,

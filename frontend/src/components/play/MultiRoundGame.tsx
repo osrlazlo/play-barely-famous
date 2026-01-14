@@ -241,16 +241,16 @@ export function Hints() {
             <div>
                 <p>Be as precise as possible. Guesses are case insensitive.</p> 
                 <p className="subtitle">Some small typos/imprecisions are acceptable, for example:</p>
-                    <GuessExample guess="spdrman" match="Spider-Man" isMatch={true}/>
-                    <GuessExample guess="att" match="AT&T" isMatch={true}/>
+                    <GuessExample guess="spderman" match="Spider-Man" isMatch={true}/>
+                    <GuessExample guess="atnt" match="AT&T" isMatch={true}/>
 
                 <p className="subtitle">Subtitles may be recognized but it is better to guess the full name, for example:</p>
                     <GuessExample guess="endgame" match="Avengers: Endgame" isMatch={true}/>
-                    <GuessExample guess="way of water" match="Avatar: Way of the Water" isMatch={true}/>
+                    <GuessExample guess="the way of water" match="Avatar: The Way of Water" isMatch={true}/>
                 
-                {/* <p className="subtitle">Subtitles may be recognized but it is better to guess the full name, for example:</p>
-                    <GuessExample guess="endgame" match="Avengers: Endgame" isMatch={true}/>
-                    <GuessExample guess="way of water" match="Avatar: Way of the Water" isMatch={true}/> */}
+                <p className="subtitle">You must be specific with numbered items, for example:</p>
+                    <GuessExample guess="spiderman" match="Spider-Man" isMatch={true}/>
+                    <GuessExample guess="spiderman" match="Spider-Man 2" isMatch={false}/>
 
                 <p className="subtitle">For some categories, if your guess is <span className="example">wrong but within the top 110,</span> the rank will be given as a hint</p>
             </div>
@@ -265,7 +265,7 @@ interface GuessExampleProps {
 }
 function GuessExample({guess,match,isMatch}:GuessExampleProps) {
     return(
-        <p><span className="example">"{guess}"</span> {isMatch ? "will":"will NOT"} be recognized as <span className="example">"{match}"</span></p>
+        <p><span className="example">"{guess}"</span> {isMatch ? "will":"will NOT"} match <span className="example">"{match}"</span></p>
     )
 
 }

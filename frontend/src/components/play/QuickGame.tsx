@@ -84,13 +84,17 @@ export default function GameScreen() {
         <BackHomeButton/>
         <div className="game-screen">
         { category ?
+        <div className="full-header">
             <div className="game-header">
                 <div className="category">
                     <div className="title">{category.name}</div>
                     <div className="source">Source: {category.source}</div>
                     <div className="updated">Updated: {formatDateAdded(category.dateAdded)}</div>
                 </div>
-            </div>:"" }
+            </div>
+            { showTopAnswers && category ? 
+            <TopAnswers category={category}/>:""}    
+        </div>:"" }
 
         { !isPlaying && category ?
             <div className="select-and-hints">
@@ -132,8 +136,6 @@ export default function GameScreen() {
                     key={g.guess} guess={g.guess} isValid={g.isValid} points={g.points} attempt=""/>)}
             </div>:""}
 
-        { showTopAnswers && category ? 
-            <TopAnswers category={category}/>:""}
         </div>
         </div>
     )

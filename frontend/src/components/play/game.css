@@ -1,8 +1,16 @@
+.full-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 .top-answers {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
+    animation: fadeIn 0.3s ease-in;
 }
 
 .title {
@@ -70,6 +78,15 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
+}
+
+.guesses-container .score {
+    font-weight: bolder;
+    font-size: x-large;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px;
 }
 
 .current-team {
@@ -208,6 +225,13 @@
     padding: 20px;
     border:3px solid rgb(150, 150, 150);
     border-radius: 25px;
+}
+
+@media (min-width: 768px) {
+    .game-header {
+        max-width: 500px;
+        height: 250px;
+    }
 }
 
 .guess-remaining {
