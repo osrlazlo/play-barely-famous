@@ -172,8 +172,6 @@ function MultiRoundGameContainer() {
 
         const {theme} = useContext(ThemeContext)
     return(
-        <>
-        <Header/>
         <div className="screen">
         
         <div className="game-screen">
@@ -243,10 +241,8 @@ function MultiRoundGameContainer() {
                 </div>:""}
         </div>
         </div>
-        </>
     )
 }
-
 
 interface GuessInputProps {
     errorMsg:ReactElement|null
