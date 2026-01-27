@@ -15,7 +15,7 @@ import Header from "../utils/Header";
 
 export default function GameScreen() {
     const params = useParams()
-    const {categories} = useContext(CategoryContext)
+    const {categories, setCategoriesStatus} = useContext(CategoryContext)
     const [category, setCategory] = useState<Category>()
     const [isPlaying, setIsPlaying] = useState(false)
     const [isGameOver, setIsGameOver] = useState(false)
@@ -30,8 +30,12 @@ export default function GameScreen() {
     //load categories if not loaded yet
     useEffect(() => {
         async function loadCategories() {
-            const categories = await getCategories()
-             setCategory(categories.find(c => Number(c.id) === Number(params.id)))
+            const res = await getCategories()
+            if (res.status == 200) {
+                let categories = res.data as Category[]
+                setCategory(categories.find(c => Number(c.id) === Number(params.id)))
+            }
+            setCategoriesStatus(res.status)     
         }
 
         if (categories.length > 0)

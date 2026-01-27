@@ -20,8 +20,11 @@ const router = createBrowserRouter([
 
 interface CategoryContext {
   categories:Category[]
+  status:number
+  setCategoriesStatus:React.Dispatch<React.SetStateAction<number>>
 }
-export const CategoryContext = createContext<CategoryContext>({categories:[]})
+let placeholder = ()=>{}
+export const CategoryContext = createContext<CategoryContext>({categories:[], status:500, setCategoriesStatus:placeholder})
 
 let setThemePlaceholder:React.Dispatch<React.SetStateAction<string>> = ()=>{}
 export const ThemeContext = createContext({theme:"", setTheme:setThemePlaceholder})
@@ -30,18 +33,22 @@ function App() {
 
     const [categories, setCategories] = useState<Category[]>([])
     const [theme, setTheme] = useState("")
+    const [categoriesStatus, setCategoriesStatus] = useState(500)
 
     useEffect(() => {
         async function loadCategories() {
-            const categories = await getCategories()
-            setCategories(categories)
+            const res = await getCategories()
+            if (res.status == 200) {
+              setCategories(res.data)
+            }
+            setCategoriesStatus(res.status)     
         }
         loadCategories()
     },[])
 
   return (
     <div className={"page-container" + theme}>
-    <CategoryContext.Provider value={{categories:categories}}>
+    <CategoryContext.Provider value={{categories:categories, status:categoriesStatus, setCategoriesStatus:setCategoriesStatus}}>
     <ThemeContext.Provider value={{theme:theme, setTheme:setTheme}}>
       <RouterProvider router={router}/>
     </ThemeContext.Provider>

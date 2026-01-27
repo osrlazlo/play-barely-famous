@@ -4,7 +4,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "sl": "concurrently \"npm run dev --prefix frontend\" \"vercel dev\"",
+    "sl": "concurrently \"npm run dev --prefix frontend\" \"vercel dev --yes --listen 3000\"",
     "dev": "vite",
     "build": "cd frontend && vite build",
     "lint": "eslint .",

@@ -10,10 +10,25 @@ import TeamCard from "./TeamCard";
 import TopAnswers from "./TopAnswers";
 import ButtonWrapper from "./utils/ButtonWrapper";
 import Header from "../utils/Header";
+import ErrorBoundary from "../../ErrorBoundary";
 
 export default function MultiRoundGame() {
+    return(
+        <>
+        <Header/>
+        <div className="screen">
+            <ErrorBoundary fallback="Failed to load categories">
+                <MultiRoundGameContainer/>
+            </ErrorBoundary>
+        </div>
+        </>
+    )
+}
+
+function MultiRoundGameContainer() {
 
     const categoriesFromContext = useContext(CategoryContext)
+    const {setCategoriesStatus, status} = useContext(CategoryContext)
     const [categories, setCategories] = useState([...categoriesFromContext.categories])
     
     const [randomCategories, setRandomCategories] = useState<Category[]>([])
@@ -40,11 +55,16 @@ export default function MultiRoundGame() {
     //load categories if not loaded yet
     useEffect(() => {
         async function loadCategories() {
-            const categories = await getCategories()
-            setCategories(categories)
+            const res = await getCategories()
+            if (res.status == 200) {
+              setCategories(res.data)
+            }
+            setCategoriesStatus(res.status)
         }
         if (categories.length < 1) loadCategories()
     },[])
+
+    if (status != 200) throw new Error("failed to load categories")
 
     useEffect(() => {
         if (guessAmt == 0) {

@@ -57,7 +57,7 @@ export default async function handler(req:Request, res:Response) {
         
     } catch (error) {
         mongodb.closeConnection()
-        return res.status(500)
+        return res.status(500).json({msg: 'An error occured'})
     }
 }
 

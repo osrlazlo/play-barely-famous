@@ -7,9 +7,10 @@ export async function getCategories() {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     }
-
+    console.log('fetch',`${API_PATH}/get`)
     const res = await fetch(`${API_PATH}/get`, options)
-    const result = await res.json() as Category[]
+    console.log(res)
+    const result = {status: res.status, data: await res.json()}
     //console.log(result)
     return result
 }
