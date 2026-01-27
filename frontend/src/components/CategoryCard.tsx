@@ -1,4 +1,6 @@
+import { useContext } from "react"
 import "./categories.css"
+import { ThemeContext } from "../App"
 
 interface CategoryCardProps {
     id:number|string
@@ -7,10 +9,11 @@ interface CategoryCardProps {
     source:string
 }
 export default function CategoryCard({name, dateAdded, source}:CategoryCardProps) {
+    const {theme} = useContext(ThemeContext)
     return(
-        <div className="category-card">
+        <div className={"category-card" + theme}>
             <span className="name">{name}</span>
-            <span className="date-created">Added: {formatDateAdded(dateAdded)}</span>
+            <span className="date-created">Updated: {formatDateAdded(dateAdded)}</span>
             <span className="source">Source: {source}</span>
         </div>
     )

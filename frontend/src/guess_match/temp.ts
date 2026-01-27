@@ -1,5 +1,16 @@
-function matchPercentage(guessStr:string, matchStr:string) {
 
+export const writeReport = new Array<ReportRow>()
+export interface ReportRow {
+    word1:string
+    word2:string
+    ratio:string
+    distance:string
+    dist_ratio:string
+}
+
+let reported = false
+function matchPercentage(guessStr:string, matchStr:string) {
+    reported = false
     let hasSpecifier = false
     let didSpecifierMatch = false
     let hasSpecifierDigits = false
@@ -98,13 +109,14 @@ function textMatch(guess:string, match:string, isSpecifier?:boolean) {
         if (isSpecifier == true) attempt2 = textMatchHelper(guessText, matchText, isSpecifier, prepositions)
         else attempt2 = textMatchHelper(guessText, matchText, undefined, prepositions)
 
-    console.log("atp1", "atp2", textMatchPercentage, attempt2)
+    //console.log("atp1", "atp2", textMatchPercentage, attempt2)
     textMatchPercentage = textMatchPercentage > attempt2 ? textMatchPercentage:attempt2
     return textMatchPercentage
 }
 
+
 function textMatchHelper(guessText:string[], matchText:string[], isSpecifier?:boolean, prepositions?:string[]) {
-    let textMatchPercentage = 0
+/*    let textMatchPercentage = 0
     //console.log("parsed", guessText, matchText)
         
     if (guessText.length < matchText.length) {
@@ -115,7 +127,7 @@ function textMatchHelper(guessText:string[], matchText:string[], isSpecifier?:bo
         }     
     }
 
-    console.log("parsed2", guessText, matchText)
+    //console.log("parsed2", guessText, matchText)
 
     let guessesMatched = 0
     let specifiersMatched = 0
@@ -125,7 +137,7 @@ function textMatchHelper(guessText:string[], matchText:string[], isSpecifier?:bo
         let totalChars = 0
         for (let i=0; i<matchText.length; i++) totalChars += matchText[i].length
         let longuestWord = matchText.reduce((a,b) => a.length > b.length ? a:b)
-        console.log("total", totalChars, "longest", longuestWord)
+        //console.log("total", totalChars, "longest", longuestWord)
         
         let finalWordMatches = []
 
@@ -164,7 +176,7 @@ function textMatchHelper(guessText:string[], matchText:string[], isSpecifier?:bo
                     }
                 }
                 
-                console.log("wc%",wordMatchPct)
+                //console.log("wc%",wordMatchPct)
                 
                 if (wordMatchPct > 0.65 
                     || (guessText[i].includes(matchText[j]) && matchText[j].length/guessText[i].length > 0.5) 
@@ -194,14 +206,14 @@ function textMatchHelper(guessText:string[], matchText:string[], isSpecifier?:bo
                 }
             }
             if (!wordMatches[0]) wordMatches.push(0)
-            console.log("all %", wordMatches)
+            //console.log("all %", wordMatches)
             finalWordMatches.push(Math.max(...wordMatches))
-            console.log("max %", finalWordMatches)
+            //console.log("max %", finalWordMatches)
         }
             if (!finalWordMatches[0]) finalWordMatches.push(0)
-            console.log("wrdmtchs", finalWordMatches)
+            //console.log("wrdmtchs", finalWordMatches)
             textMatchPercentage = finalWordMatches.reduce((a,b) => a+b)
-            console.log("ptxt%", textMatchPercentage)
+            //console.log("ptxt%", textMatchPercentage)
 
         if ((guessText.length < matchText.length 
             && matchText.find(e => e.match(/the|or|and|of|episode|part|vol/))
@@ -232,7 +244,7 @@ function textMatchHelper(guessText:string[], matchText:string[], isSpecifier?:bo
     }
 
     let txtDist = Math.round((matchText.length - (textMatchPercentage*matchText.length))*Math.pow(1.05, matchText.length/2) - Math.abs(matchText.length - guessText.length))
-    console.log("txt dist", txtDist)
+    //console.log("txt dist", txtDist)
     txtDist = txtDist < 0 ? 0:txtDist
         switch(txtDist) {   
             case 0: textMatchPercentage *= 1.10
@@ -244,91 +256,147 @@ function textMatchHelper(guessText:string[], matchText:string[], isSpecifier?:bo
             default: textMatchPercentage *= 0.90
         }
     if (textMatchPercentage > 1) textMatchPercentage = Math.floor(textMatchPercentage)
-    console.log("ratio", matchRatio)
+    //console.log("ratio", matchRatio)
+        */
     let final = 0
-
+        /*
         if (matchRatio >= 0.8) final = matchRatio*0.15 + textMatchPercentage*0.85
         else if (matchRatio >= 0.6 &&  matchRatio < 0.8) final = matchRatio*0.25 + textMatchPercentage*0.75
         else if (matchRatio >= 0.5 &&  matchRatio < 0.6) final = matchRatio*0.50 + textMatchPercentage*0.50
         else final = matchRatio*0.85 + textMatchPercentage*0.15
-
-    console.log("txt%", final)
+        */
+    //console.log("txt%", final)
     return final*100
 }
 
-function wordMatch(word1:string, word2:string) {
-    let finalMatchPercentage = 0
+interface LetterMapValue {
+    index:number
+    dist:number
+}
+
+export function wordMatch(word1:string, word2:string, noMathcDist?:number) {
+    word1 = word1.toLowerCase()
+    word2 = word2.toLowerCase()
+    let matchRatio = 0
     let match = 0
-    let max = word1.length > word2.length ? word1.length:word2.length
     //let min = guess.length < real.length ? guess.length:real.length
-    let streak = false
     let prevDist = 0
-    console.log("wordmatch", word1, word2)
+    let wordDistances = [0]
+    //console.log("wordmatch", word1, word2)
+    let lettersMap = new Map<string, LetterMapValue>()
 
     let tempReal = word2.match(/[a-zA-Z\d\&]/g)
-    if (tempReal)
+    if (tempReal) 
     for (let i=0; i<word1.length; i++) {
         let distances = []
-        let dist = -1
-       
-        for(let j=0; j<tempReal.length; j++) {
+        let dist:number|null = null
+        let hasMatch = false
+        let j=0
+        let matchIndex = word2.length
+        let prevShortestDist:number|null = null
+        
+        for(; j<tempReal.length; j++) {
             //console.log("compare", word1[i], tempReal[j])
             let acceptedMatch = (((word1[i]=="n" && tempReal[j]=="&")||(word1[i]=="&" && tempReal[j]=="n")) && Math.abs(j-i) == 0)
             
             if ((word1[i] === tempReal[j]) || acceptedMatch) {
-                let matchDist = Math.abs(j-i)       
-                distances.push(matchDist)
+                let matchDist = i-j       
+                distances.push(Math.abs(matchDist))
+                hasMatch = true
+                if (prevShortestDist == null) {
+                    prevShortestDist = matchDist
+                    matchIndex = j
+                } 
+                else if (Math.abs(matchDist) < Math.abs(prevShortestDist)) {
+                    prevShortestDist = matchDist
+                    matchIndex = j
+                }
             }
         }
 
-        if (distances.length > 0) dist = Math.min(...distances)
-        //console.log("m,p", dist, prevDist)
-        
-        if (dist > 0 && dist == prevDist) {
-            prevDist = dist
-            dist = 0
-        } else prevDist = dist
+        if (hasMatch) {
+            match++
+            tempReal[matchIndex] = "$"
+        }
 
-        console.log("l dist", dist)
-        switch(dist) {
-            case 0: match += 1
-                break
-            case 1: match += 0.5
-                break
-            case 2: match -= 0.1
-                break
-            case 3: match -= 0.5
-                break
-            default: match -= 0.8
-                break
+        if (distances.length > 0) dist = distances.includes(0) ? 0:Math.min(...distances)
+        // if (dist != null) {
+        //     //console.log("m,p", dist, prevDist)
+        //     if (dist == prevDist) {
+        //         prevDist = dist
+        //         dist = 0
+        //     } else prevDist = dist
+        //     //console.log("nd", dist, prevDist)
+        // }
+
+        // console.log("l dist", dist)
+        // switch(dist) {
+        //     case 0: match += 1
+        //         break
+        //     case 1: match += 0.5
+        //         break
+        //     case 2: match -= 0.1
+        //         break
+        //     case 3: match -= 0.5
+        //         break
+        //     default: match -= 0.8
+        //         break
+        // }
+        noMathcDist = noMathcDist ? noMathcDist:2
+        if (dist != null) {
+            wordDistances.push(Math.abs(dist))
+            lettersMap.set(word1[i], {index:i, dist:Math.abs(dist)})
+        }
+        else {
+            let alreadyMatched = lettersMap.has(word1[i])
+            if (alreadyMatched) {
+                let prevMatch = lettersMap.get(word1[i])
+                let matchIndex = prevMatch!.index + prevMatch!.dist
+                //console.log(prevMatch, i)
+                if (Math.abs(matchIndex-i) < prevMatch!.dist) {
+                    wordDistances.push(-(prevMatch!.dist)+noMathcDist+Math.abs(matchIndex-i))
+                } else wordDistances.push(noMathcDist)
+            } else {
+                wordDistances.push(noMathcDist)
+            }            
         }
     }
-        finalMatchPercentage = match/max
-    if (finalMatchPercentage <= 0.30)
+        matchRatio = match/word2.length
+    if (matchRatio <= 0.30)
         if (word1.includes(word2) && (word2.length/word1.length >= 0.70)) {
-            finalMatchPercentage *= 1+(word2.length/word1.length)+0.1
+            matchRatio *= 1+(word2.length/word1.length)+0.1
         }
         else if (word2.includes(word1) && (word1.length/word2.length >=0.70)) {
-            finalMatchPercentage *= 1+(word1.length/word2.length)+0.1
+            matchRatio *= 1+(word1.length/word2.length)+0.1
         }
-    console.log("len, %", word2.length, finalMatchPercentage)
-    let wordDist = Math.round((word2.length - (finalMatchPercentage*word2.length))*Math.pow(1.05, word2.length/2) - Math.abs(word2.length - word1.length))
-    console.log("word dist", wordDist)
-    wordDist = wordDist < -1 ? -10:wordDist
-        switch(wordDist) { 
-            case -1:  
-            case 0:
-            case 1: finalMatchPercentage *= 1.15
-                break
-            case 2: finalMatchPercentage *= 0.98
-                break  
-            case -10: finalMatchPercentage *= 1.5
-                break 
-            default: finalMatchPercentage *= 0.90
-        }
-    if (finalMatchPercentage > 1) finalMatchPercentage = Math.floor(finalMatchPercentage)
-    console.log("final adj", finalMatchPercentage)
-    return finalMatchPercentage
+    
+    //let wordDist = Math.round((word2.length - (matchRatio*word2.length))*Math.pow(1.05, word2.length/2) - Math.abs(word2.length - word1.length))
+    //console.log(word1, word2)
+    console.log("alldist", wordDistances)
+    let wordDist = (wordDistances.reduce((a,b) => a+b)/word1.length*wordDistances.reduce((a,b) => a+b)/word2.length)*Math.pow(1.05, word2.length/2)
+    if (wordDist > 0.5 && wordDist < 1) wordDist = Math.abs(1-wordDist)
+    console.log("len", word2.length, "m", match,"ratio", matchRatio.toFixed(2), "word dist", wordDist.toFixed(2))
+    console.log(`distance between ${word1} = ${word2}:`, (wordDist*(1+1-matchRatio)).toFixed(2))
+    
+    //add to report for excel file
+    return {word1,word2,ratio:matchRatio.toFixed(4),distance:wordDist.toFixed(4), dist_ratio:(wordDist*(1+1-matchRatio)).toFixed(4)}
+
+    // wordDist = wordDist < -1 ? -10:wordDist
+    //     switch(wordDist) { 
+    //         case -1:  
+    //         case 0:
+    //         case 1: matchRatio *= 1.15
+    //             break
+    //         case 2: matchRatio *= 0.98
+    //             break  
+    //         case -10: matchRatio *= 1.5
+    //             break 
+    //         default: matchRatio *= 0.90
+    //     }
+    let finalMatchPercentage = (1-matchRatio)/((1/wordDist) * Math.pow(1.01,word2.length))
+    //if (matchRatio > 1) matchRatio = Math.floor(matchRatio)
+    //console.log("final adj", finalMatchPercentage)
+    //return matchRatio
 }
 
 interface MatchPct {
@@ -381,7 +449,7 @@ function matchAverage(matchPct:MatchPct) {
 
 export function isMatch(guess:string, match:string) {
     let matchPct = matchPercentage(guess, match)
-    console.log(matchPct)
+    //console.log(matchPct)
     let matchAvg = matchAverage(matchPct)
     return matchAvg
 }
@@ -429,10 +497,21 @@ function romanToInt(r:string) {
     }
     return value
 }
-let str = "mirosft"; let str2 = "Microsoft"
-console.log(isMatch(str,str2))
-// str = "far frm home"; str2 = "Spider-Man: Far From Home"
-//console.log(isMatch(str,str2))
+
+
+// let str = "labratory"; let str2 = "laboratory"
+// wordMatch(str,str2)
+// wordMatch(str2,str)
+// str = "america"; str2 = "maverick"
+// wordMatch(str,str2)
+// str = "mircosfot"; str2 = "microsoft"
+// wordMatch(str2,str)
+// str = "far frm home"; str2 = "Far From Home"
+// isMatch(str,str2)
+// str = "harry potter"; str2 = "Harry Potter"
+// isMatch(str,str2)
+// str = "raf"; str2 = "far"
+// isMatch(str,str2)
 
 // 15,mirosft,Microsoft,TRUE,[58.8,false]
 // 35,secrt lif of pts,The Secret Life of Pets,FALSE,[84.38,true]

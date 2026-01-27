@@ -1,17 +1,17 @@
 import { useParams } from "react-router";
-import { CategoryContext } from "../../App";
+import { CategoryContext, ThemeContext } from "../../App";
 import { useContext, useEffect, useState } from "react";
 import { getCategories } from "../../../../api/functions/getCategories";
 import { formatDateAdded } from "../CategoryCard";
 import type { GuessResult, Category } from "./interfaces";
-import PreviousGuess from "./PreviousGuess";
 import "./game.css"
-import BackHomeButton from "../utils/BackHomeButtom";
 import { calculateScore, checkGuess } from "./helpers"
 import SelectAmount from "./utils/SelectAmount";
-import { isMatch } from "./matchPercentage";
 import TopAnswers from "./TopAnswers";
 import { Hints } from "./MultiRoundGame";
+import PreviousGuesses from "./PreviousGuess";
+import ButtonWrapper from "./utils/ButtonWrapper";
+import Header from "../utils/Header";
 
 export default function GameScreen() {
     const params = useParams()
@@ -46,10 +46,11 @@ export default function GameScreen() {
     //start game
         function startGame() {
             setIsPlaying(true)
+            if (category) console.log(category)
         }
         function endGame() {
             setIsGameOver(true)
-            setShowTopAnswers(true)
+            //setShowTopAnswers(true)
         }
     
     //reset game
@@ -79,9 +80,17 @@ export default function GameScreen() {
             setGuessAmt(g => g-1)
         }
 
+    function toggleTopAnswers() {
+        setShowTopAnswers(t => !t)
+    }
+
+    const {theme} = useContext(ThemeContext)
+
     return(
+        <>
+        <Header/>
         <div className="screen">
-        <BackHomeButton/>
+        
         <div className="game-screen">
         { category ?
         <div className="full-header">
@@ -92,16 +101,24 @@ export default function GameScreen() {
                     <div className="updated">Updated: {formatDateAdded(category.dateAdded)}</div>
                 </div>
             </div>
+            { isGameOver && !showTopAnswers ? 
+                <ButtonWrapper>
+                    <button id="show-top-answers-button"
+                    onClick={() => toggleTopAnswers()}>Show Top Answers</button>
+                </ButtonWrapper>
+                :""}
             { showTopAnswers && category ? 
-            <TopAnswers category={category}/>:""}    
+                <TopAnswers category={category}/>:""}    
         </div>:"" }
 
         { !isPlaying && category ?
             <div className="select-and-hints">
             <div className="select-options">
                 <SelectAmount name="guesses" value={guessAmt} min={minGuess} max={maxGuess} setValue={setGuessAmt}/>
+                <ButtonWrapper>
                 <button className="start-game-button"
-                    onClick={() => startGame()}>START GAME</button>         
+                    onClick={() => startGame()}>START GAME</button>
+                </ButtonWrapper>         
             </div>
             <Hints/>
             </div>:"" }
@@ -109,8 +126,8 @@ export default function GameScreen() {
         { isPlaying ? 
             <div className="guesses-container">
                 <div className="score">Your score: {calculateScore(guesses)}</div>
-                <div className="guess-remaining">
-                    <div className="num"> {guessAmt}</div> guess(es) left</div>
+                <div className={"guess-remaining"+theme}>
+                    <div className={"num"+theme}> {guessAmt}</div> guess(es) left</div>
                 
                 { !isGameOver ? 
                     
@@ -119,24 +136,30 @@ export default function GameScreen() {
                         {errorMsg ? <div className="error-msg">{errorMsg}</div>:""}
                         <div id={errorMsg.key ? "input-error":""}>
                             <input type="text" placeholder="enter a guess" required id={ errorMsg ? "input-error":""}
-                                value={guess} onChange={e => setGuess(e.target.value)}>
+                                className={"guess-input" + theme} value={guess} onChange={e => setGuess(e.target.value)}>
                             </input>
                         </div>
-                        <button type="submit" id="enter-guess-button">GUESS</button>
+                        <ButtonWrapper>
+                            <button type="submit" id="enter-guess-button">GUESS</button>  
+                        </ButtonWrapper>  
                     </form></>:""}
 
-                { isGameOver ? <button className="reset-game-button"
-                    onClick={() => resetGame()}>Reset</button>:""}
+                { isGameOver ? 
+                    <ButtonWrapper>
+                      <button className="reset-game-button"
+                    onClick={() => resetGame()}>Reset</button>  
+                    </ButtonWrapper>
+                    :""}
 
             </div>:""}
 
         { isPlaying && guesses ? 
             <div className="previous-guesses">
-                {guesses.map(g => <PreviousGuess 
-                    key={g.guess} guess={g.guess} isValid={g.isValid} points={g.points} attempt=""/>)}
+               <PreviousGuesses guesses={guesses} />
             </div>:""}
 
         </div>
         </div>
+        </>
     )
 }

@@ -3,17 +3,21 @@ import "./categories.css"
 import { Link } from "react-router"
 import {CategoryContext} from "../App"
 import { useContext } from "react"
-import BackHomeButton from "./utils/BackHomeButtom"
+import Header from "./utils/Header"
 
 export default function Categories() {
 
     const {categories} = useContext(CategoryContext)
 
     return(
+    
         <>
-        <BackHomeButton/>
+        <Header/>
+        <div className="screen">
+        <h1>Quick Game</h1>
+        <h3>Select a Category</h3>
         <div className='categories-container'> 
-            <h3>Select a Category</h3>
+            
             <div className="categories">
                 
                 {categories?.map(c => 
@@ -21,6 +25,7 @@ export default function Categories() {
                         <CategoryCard  name={c.name} source={c.source} id={c.id} dateAdded={c.dateAdded}/>
                     </Link>)}
             </div>
+        </div>
         </div>
         </>
     )

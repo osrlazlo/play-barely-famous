@@ -1,4 +1,4 @@
-.previous-guess {
+.last-guess, .previous-guess, .last-guess-light, .previous-guess-light {
     border-radius: 15px;
     height: fit-content;
     display: grid;
@@ -6,13 +6,88 @@
     align-items: center;
     justify-content: center;
     justify-items: center;
-    padding: 10px;
+    padding: 8px;
     box-sizing: border-box;
     margin: 8px;
+    transition: all 0.2s ease-in-out;
+    border: 2px solid hsl(0, 0%, 70%);
     box-shadow:0px 8px hsl(0, 0%, 70%);
+}
+
+.last-guess-light, .previous-guess-light {
+    box-shadow: 0px 8px #666666;
+    border: 2px solid #666666;  
+}
+
+.last-guess, .last-guess-light {
+    min-width: 150px;
+    animation: addGuess 0.2s ease-in-out;
+}
+
+.teams-1 .last-guess, .teams-1 .last-guess-light {
+    max-width: 400px;
+    min-width: 200px;
+    width: 80vw;
+    border: 2px solid hsl(0, 0%, 70%);
+    box-shadow:0px 8px hsl(0, 0%, 70%);
+}
+.teams-1 .last-guess-light {
+    box-shadow: 0px 8px #666666;
+    border: 2px solid #666666;   
+}
+
+.teams-2 .last-guess, .teams-2 .last-guess-light {
+    max-width: 300px;
+    min-width: 200px;
+    width: 45vw;
+    border: 2px solid hsl(0, 0%, 70%);
+    box-shadow:0px 4px hsl(0, 0%, 70%);
+}
+.teams-2 .last-guess-light {
+    box-shadow: 0px 4px #666666;
+    border: 2px solid #666666;   
+}
+
+.teams-3 .last-guess, .teams-3 .last-guess-light {
+    max-width: 200px;
+    min-width: 150px;
+    width: 27vw;
+    border: 2px solid hsl(0, 0%, 70%);
+    box-shadow:0px 4px hsl(0, 0%, 70%);
+}
+.teams-3 .last-guess-light {
+    box-shadow: 0px 4px #666666;
+    border: 2px solid #666666;   
+}
+
+.previous-guesses-container {
+    display: flex;
+    flex-wrap: wrap;
     max-width: 35vw;
-    min-width: 400px;
-    animation: addGuess 0.4s ease-in-out;
+    align-items: center;
+    justify-content: center;
+}
+
+.previous-guess, .previous-guess-light {
+    min-width: 140px;
+    min-height: 25px;
+    height: fit-content;
+    width: fit-content;
+    font-size: small;
+    box-shadow:0px 4px hsl(0, 0%, 70%);
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    box-sizing: content-box;
+    padding: 2px 5px;
+    box-sizing: border-box;
+}
+
+.previous-guess-light {
+    background-color: white;
+    box-shadow: 0px 4px #666666;
+    border: 2px solid #666666;
 }
 
 @keyframes addGuess {
@@ -26,7 +101,7 @@
     }
 }
 
-.previous-guess .guess-trophy-icon {
+.last-guess .guess-trophy-icon {
     color: white;
 }
 
@@ -49,10 +124,11 @@
     color: red;
 }
 
-.golden-guess {
+#golden-guess {
     background-color: gold;
-    box-shadow:0px 8px goldenrod;
+    box-shadow:0px 4px 0px goldenrod;
     color: black;
+    border: 2px solid goldenrod
 }
 
 .guess-trophy-icon {
@@ -74,4 +150,10 @@
     justify-content: center;
 }
 
+.team-guesses {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+}
 

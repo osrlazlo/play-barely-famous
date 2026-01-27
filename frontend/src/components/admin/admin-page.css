@@ -1,4 +1,28 @@
+.admin-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    min-width: 600px;
+    height: fit-content;
+    border: 1px solid red;
+    box-sizing: border-box;
+    padding: 15px;
+}
+
 #new-category-form {
     display: flex;
     flex-direction: column;
+    gap: 25px;
 }
+
+#status, #status-error {
+    font-weight: bold;
+    color: green;
+}
+
+#status-error {
+    color: red; 
+}
+

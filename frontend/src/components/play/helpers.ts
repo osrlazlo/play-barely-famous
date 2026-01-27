@@ -1,5 +1,5 @@
+import { isMatch } from "../../guess_match/guessMatch"
 import type { Category, CategoryElement, GuessResult, Team } from "./interfaces"
-import { isMatch } from "./matchPercentage"
 
 export function checkGuess(guess:string, category:Category) {
     if (!category) return
@@ -15,7 +15,7 @@ export function checkGuess(guess:string, category:Category) {
     let findGuess = data.find(e => isMatch(guess, e.name).pass)
     
     //if still no match try with "other" - e.g. company stock symbol instead of name
-    if (!findGuess) findGuess = data.find(e => isMatch(guess,e.other!).pass)
+    if (!findGuess) findGuess = data.find(e => e.other && e.other.length > 1 ? isMatch(guess,e.other).pass:false)
         
     if (findGuess) {
         guessResult.isValid = true

@@ -1,8 +1,8 @@
 import Papa from "papaparse"
 const API_PATH = import.meta.env.VITE_API_PATH
 
-export async function handleAddCategory(name:string, file:File, source:string) {
-    if (!name || !file || !source) return
+export async function handleAddCategory(name:string, file:File, source:string, password:string) {
+    if (!name || !file || !source || !password) return
     console.log(file)
     const data = await parseCSVtoJSON(file)
     console.log("data", data)
@@ -14,11 +14,13 @@ export async function handleAddCategory(name:string, file:File, source:string) {
             name,
             data,
             source,
+            password,
     })}
     
     const res = await fetch(`${API_PATH}/add`, options)
-    const result = res.json()
-    console.log(result)
+    //const result = await res.json()
+    //console.log(result)
+    return res
 }
 
 function parseCSVtoJSON(file:File) {

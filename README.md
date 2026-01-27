@@ -45,7 +45,7 @@ Text matching is calculated by first computing a score for each word based on ch
 "secrt lif of pts" and "The Secret Life of Pets" score 75.50
 ```
 
-The algorithm is also build to match with some "specifiers" if the specifier is >= 50% of the string and the guess matches the specifier, e.g.
+The algorithm is also built to match with some "specifiers" if the specifier is >= 50% of the string and the guess matches the specifier, e.g.
 ```
 "endgame" macthes "Avengers: Endgame"
 "way of the water" matches "Avatar: Way of the Water"

@@ -13,6 +13,10 @@ dist-ssr
 *.local
 data_imports
 .env
+.vercel
+*_old*
+tests
+*.csv
 
 # Editor directories and files
 .vscode/*
@@ -25,4 +29,3 @@ data_imports
 *.sln
 *.sw?
 
-.vercel

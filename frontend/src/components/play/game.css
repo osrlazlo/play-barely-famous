@@ -6,6 +6,13 @@
     flex-wrap: wrap;
 }
 
+.top-answers-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .top-answers {
     display: flex;
     flex-direction: column;
@@ -60,15 +67,32 @@
     margin-top: 35px;
 }
 
-.team-card {
+.team-card, .team-card-light {
     border: 3px solid white;
     border-radius: 15px;
     padding: 0px 10px;
-    width: 100%;
     max-width: 500px;
     transition: all 0.3s ease-in-out;
     margin-top: 15px;
     background-color: rgb(56, 56, 56);
+}
+
+.team-card-light {
+    border-color: black;
+    background-color: white;
+}
+
+.teams-1 {
+    width: 100%;
+    min-width: 300px;
+}
+.teams-2 {
+    width: 45vw;
+    min-width: 250px;
+}
+.teams-3 {
+    width: 27vw;
+    min-width: 200px;
 }
 
 .team-card .score {
@@ -77,7 +101,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
 }
 
 .guesses-container .score {
@@ -96,7 +119,7 @@
     box-shadow: 0px 0px 8px hsl(237, 100%, 80%);
 }
 
-.winning-team {
+.winning-team, .winning-team-light {
     border-color: goldenrod;
     transform: scale(1.05);
     margin: 0px 15px;
@@ -105,14 +128,17 @@
 
 .winning-team .score {
     color: gold;
+    gap: 10px;
+}
+
+.winning-team-light .score {
+    color: goldenrod;
+    gap: 10px;
 }
 
 .screen {
     box-sizing: border-box;
     width: 90vw;
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100vw;
     min-height: 100vh;
     padding: 60px;
@@ -135,35 +161,6 @@
     align-items: center;
 }
 
-.game-screen button {
-    border-radius: 35px;
-    width: 25vw;
-    height: 60px;
-    min-width: 60px;
-    max-width: 300px;
-    margin: 15px;
-    font-weight: bold;
-    border: 2px solid white;
-    box-sizing: border-box;
-    transition: all 0.1s ease;
-    box-shadow: 0px 8px 0px rgb(223, 223, 223);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.game-screen button:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 8px 0px #646cff;
-    border-color: #646cff;
-}
-
-.game-screen button:active {
-    border-color: #646cff;
-    box-shadow: 0px 0px;
-    translate: 0px 8px;
-}
-
 .select-options {
     display: flex;
     flex-direction: column;
@@ -182,7 +179,7 @@
     margin-top: 10px;
 }
 
-.num-select {
+.num-select, .num-select-light {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -207,12 +204,18 @@
     color: hsl(51, 100%, 60%);
 }
 
-.num {
+.num, .num-light {
+    font-weight: bold;
     width: 4vw;
     max-width: 50px;
     padding: 5px;
     background-color: rgb(88, 88, 88);
     border-radius: 5px;
+    transition: all 0.6s ease-in-out;
+}
+
+.num-light {
+    background-color: rgb(228, 228, 228);
 }
 
 .game-header {
@@ -234,11 +237,20 @@
     }
 }
 
-.guess-remaining {
+.guess-remaining, .guess-remaining-light {
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: large;
+    font-weight: bold;
+}
+
+.guess-remaining-light {
+    color: rgb(78, 78, 78);
+}
+
+.guess-remaining-light .num {
+    color: white;
 }
 
 .category .title {
@@ -268,19 +280,7 @@
     margin: 25px 0px;
 }
 
-#enter-guess-button {
-    width: 100px;
-    height: 40px;
-    box-shadow: 0px 4px 0px;
-}
-
-#enter-guess-button:hover {
-    width: 100px;
-    height: 40px;
-    box-shadow: 0px 4px 0px #646cff;
-}
-
-#submit-guess input {
+.guess-input, .guess-input-light {
     border: 2px solid white;
     width: 35vw;
     max-width: 500px;
@@ -290,6 +290,13 @@
     box-sizing: border-box;
     transition: all 0.1s ease;
     margin-bottom: -10px;
+}
+
+.guess-input-light {
+    background-color: white;
+    color: rgb(73, 73, 73);
+    border: 2px solid grey;
+    transition: all 0.3s ease-in-out;
 }
 
 #submit-guess label {
@@ -342,7 +349,13 @@
 }
 
 .hints .example {
+    font-weight: bold;
     color: rgb(255, 138, 138);
+}
+
+.hints .example-light {
+    font-weight: bold;
+    color: rgb(255, 68, 35);
 }
 
 .select-and-hints {

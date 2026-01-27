@@ -15,6 +15,7 @@
     "@types/express": "^5.0.6",
     "@types/mongodb": "^4.0.7",
     "@types/papaparse": "^5.5.2",
+    "bcryptjs": "^3.0.3",
     "concurrently": "^9.2.1",
     "express": "^5.2.1",
     "mongodb": "^7.0.0",

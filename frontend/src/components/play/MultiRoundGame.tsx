@@ -1,6 +1,5 @@
-import BackHomeButton from "../utils/BackHomeButtom";
-import { CategoryContext } from "../../App";
-import React, { useContext, useEffect, useState, type ReactElement, type ReactNode } from "react";
+import { CategoryContext, ThemeContext } from "../../App";
+import React, { useContext, useEffect, useState, type ReactElement } from "react";
 import { getCategories } from "../../../../api/functions/getCategories";
 import { formatDateAdded } from "../CategoryCard";
 import type { GuessResult, Category, Team } from "./interfaces";
@@ -8,8 +7,9 @@ import "./game.css"
 import { checkGuess, createTeams, findWinnerIndex, getRandomInt, shuffleArray } from "./helpers";
 import SelectAmount from "./utils/SelectAmount";
 import TeamCard from "./TeamCard";
-import { isMatch } from "./matchPercentage";
 import TopAnswers from "./TopAnswers";
+import ButtonWrapper from "./utils/ButtonWrapper";
+import Header from "../utils/Header";
 
 export default function MultiRoundGame() {
 
@@ -51,7 +51,7 @@ export default function MultiRoundGame() {
             if (currentRound == roundsAmt) endGame()
             else if (currentRound < roundsAmt) {
                 setIsRoundOver(true)
-                setShowTopAnswers(true)
+                //setShowTopAnswers(true)
             }
             teams.map(t => t.isCurrentTeam = false)
         }    
@@ -71,7 +71,7 @@ export default function MultiRoundGame() {
         }
         function endGame() {
             setIsGameOver(true)
-            setShowTopAnswers(true)
+            //setShowTopAnswers(true)
             setIsRoundOver(true)
             if (teamsAmt > 1) {
                 let winner = findWinnerIndex(teams)
@@ -146,9 +146,16 @@ export default function MultiRoundGame() {
             return randomCategories
         }
 
+        function toggleTopAnswers() {
+            setShowTopAnswers(t => !t)
+        }
+
+        const {theme} = useContext(ThemeContext)
     return(
+        <>
+        <Header/>
         <div className="screen">
-        <BackHomeButton/>
+        
         <div className="game-screen">
             
             { !isPlaying && categories ?
@@ -157,46 +164,66 @@ export default function MultiRoundGame() {
                     <SelectAmount name="players/teams" value={teamsAmt} min={minTeams} max={maxTeams} setValue={setTeamsAmt}/>
                     <SelectAmount name="rounds" value={roundsAmt} min={minRounds} max={maxRounds} setValue={setRoundsAmt}/>
                     <SelectAmount name="guesses (per round, per team)" value={guessAmt} min={minGuess} max={maxGuess} setValue={setGuessAmt}/>
-                    <button className="start-game-button"
-                        onClick={() => startGame()}>START GAME</button>           
+                    <ButtonWrapper>
+                        <button className="start-game-button"
+                        onClick={() => startGame()}>START GAME</button>     
+                    </ButtonWrapper>
+                             
                 </div>
                 <Hints/> 
                 </div>:"" }
 
-            { isPlaying ? 
+            { isPlaying && randomCategories[currentCategory] ? 
                 <div className="guesses-container">
-                    <div className="game-header">
-                        <div className="rounds">Round {currentRound}/{roundsAmt}</div>
-                        <div className="category">
-                            <div className="title">{randomCategories[currentCategory].name}</div>
-                            <div className="source">Source: {randomCategories[currentCategory].source}</div>
-                            <div className="updated">Updated: {formatDateAdded(randomCategories[currentCategory].dateAdded)}</div>
+                    <div className="full-header">
+                        <div className="game-header">
+                            <div className="rounds">Round {currentRound}/{roundsAmt}</div>
+                            <div className="category">
+                                <div className="title">{randomCategories[currentCategory].name}</div>
+                                <div className="source">Source: {randomCategories[currentCategory].source}</div>
+                                <div className="updated">Updated: {formatDateAdded(randomCategories[currentCategory].dateAdded)}</div>
+                            </div>
+                            <div className="guess-remaining">
+                                <div className={"num" + theme}> {Math.ceil(guessAmt/teamsAmt)}</div> guess(es) left</div>
                         </div>
-                        <div className="guess-remaining">
-                            <div className="num"> {Math.ceil(guessAmt/teamsAmt)}</div> guess(es) left</div>
+                        <div className="top-answers-container">
+                            { (isRoundOver || isGameOver) && !showTopAnswers ? 
+                            
+                            <ButtonWrapper>
+                                <button id="show-top-answers-button"
+                                onClick={() => toggleTopAnswers()}>Show Top Answers</button>
+                            </ButtonWrapper>:""}
+                            
+                            { showTopAnswers ? 
+                                <TopAnswers category={randomCategories[currentCategory]}/>:""}
+                        </div>
                     </div>
                     { !isGameOver ? !isRoundOver ?
                        <>
                        <GuessInput errorMsg={errorMsg} guess={guess} enterGuess={enterGuess} setGuess={setGuess}/>
                        </>:"":""}
-                        
-                    { isRoundOver && !isGameOver ? <button className="next-round-button"
-                        onClick={() => nextRound()}>Next Round</button>:""}
+                    <div className="game-buttons">
+                        { isRoundOver && !isGameOver ? 
+                            <ButtonWrapper>
+                            <button className="next-round-button"
+                            onClick={() => nextRound()}>Next Round</button>
+                            </ButtonWrapper>:""}
 
-                    { isGameOver ? <button className="reset-game-button"
-                        onClick={() => resetGame()}>Reset</button>:""}
-                    
+                        { isGameOver ? 
+                            <ButtonWrapper>
+                                <button className="reset-game-button"
+                                onClick={() => resetGame()}>Reset</button>   
+                            </ButtonWrapper>:""}                        
+                    </div>
                     <div className="teams-container">
                         {teams?.map(t => 
-                            <TeamCard key={t.name} team={t}/>
+                            <TeamCard key={t.name} team={t} n={teamsAmt} theme={theme}/>
                         )}
                     </div>
-
-                { showTopAnswers ? 
-                    <TopAnswers category={randomCategories[currentCategory]}/>:""}
                 </div>:""}
         </div>
         </div>
+        </>
     )
 }
 
@@ -208,16 +235,21 @@ interface GuessInputProps {
     setGuess:(s:string) => void
 }
 export function GuessInput({errorMsg, guess, enterGuess, setGuess}:GuessInputProps) {
+    const {theme} = useContext(ThemeContext)
     return(
         <form id="submit-guess" onSubmit={(e) => enterGuess(e)}>
             <label>Enter a guess</label>
             {errorMsg}
             <div id={errorMsg ? "input-error":""}>
                 <input type="text" placeholder="enter a guess" required id={ errorMsg ? "input-error":""}
+                    className={"guess-input" + theme}
                     value={guess} onChange={e => setGuess(e.target.value)}>
                 </input>
             </div>
-            <button type="submit" id="enter-guess-button">GUESS</button>
+            <ButtonWrapper>
+                <button type="submit" id="enter-guess-button">GUESS</button>   
+            </ButtonWrapper>
+            
         </form>
     )
 }
@@ -235,6 +267,7 @@ export function ErrorMsg({guess}:ErrorMsgProps) {
 }
 
 export function Hints() {
+    const {theme} = useContext(ThemeContext)
     return(
         <div className="hints">
             <p id="section-title">Some notes and hints</p>
@@ -252,7 +285,7 @@ export function Hints() {
                     <GuessExample guess="spiderman" match="Spider-Man" isMatch={true}/>
                     <GuessExample guess="spiderman" match="Spider-Man 2" isMatch={false}/>
 
-                <p className="subtitle">For some categories, if your guess is <span className="example">wrong but within the top 110,</span> the rank will be given as a hint</p>
+                <p className="subtitle">For some categories, if your guess is <span className={"example" + theme}>wrong but within the top 110,</span> the rank will be given as a hint</p>
             </div>
         </div>
     )
@@ -264,8 +297,9 @@ interface GuessExampleProps {
     isMatch:boolean
 }
 function GuessExample({guess,match,isMatch}:GuessExampleProps) {
+    const {theme} = useContext(ThemeContext)
     return(
-        <p><span className="example">"{guess}"</span> {isMatch ? "will":"will NOT"} match <span className="example">"{match}"</span></p>
+        <p><span className={"example" + theme}>"{guess}"</span> {isMatch ? "will":"will NOT"} match <span className={"example" + theme}>"{match}"</span></p>
     )
 
 }
