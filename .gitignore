@@ -28,6 +28,3 @@ tests
 *.njsproj
 *.sln
 *.sw?
-
-
-.vercel
