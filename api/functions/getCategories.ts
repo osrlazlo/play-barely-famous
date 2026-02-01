@@ -1,7 +1,6 @@
 import type { Category } from "../../frontend/src/components/play/interfaces"
 
-// const API_PATH = import.meta.env.VITE_API_PATH
-const API_PATH = 'https://play-barely-famous.vercel.app/api/handlers'
+const API_PATH = import.meta.env.VITE_API_PATH
 export async function getCategories() {
     const options = {
         method: 'GET',
@@ -10,7 +9,7 @@ export async function getCategories() {
 
     let result
     try {
-        // console.log('fetch',`${API_PATH}/get`)
+        console.log('fetch',`${API_PATH}/get`)
         const res = await fetch(`${API_PATH}/get`, options)
         let data
         if (res.ok) data = await res.json()
