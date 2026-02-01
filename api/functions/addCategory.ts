@@ -1,6 +1,5 @@
 import Papa from "papaparse"
-// const API_PATH = import.meta.env.VITE_API_PATH
-const API_PATH = 'https://play-barely-famous.vercel.app/api/handlers'
+const API_PATH = import.meta.env.VITE_API_PATH
 
 export async function handleAddCategory(name:string, file:File, source:string, password:string) {
     if (!name || !file || !source || !password) return
