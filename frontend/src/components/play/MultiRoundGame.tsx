@@ -200,7 +200,7 @@ function MultiRoundGame() {
             { isPlaying && randomCategories[currentCategory] ? 
                 <div className="guesses-container">
                     <div className="full-header">
-                        <div className="game-header">
+                        <div className="multi-game-header">
                             <div className="rounds">Round {currentRound}/{roundsAmt}</div>
                             <div className="category">
                                 <div className="title">{randomCategories[currentCategory].name}</div>

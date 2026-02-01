@@ -1,5 +1,5 @@
 
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import type { GuessResult } from "./interfaces";
 import "./previous-guess.css"
 import { ThemeContext } from "../../App";
@@ -29,13 +29,24 @@ export default function PreviousGuesses({guesses}:Guesses) {
 
 function LastGuess({guess, points, isValid}:GuessResult) {
     const {theme} = useContext(ThemeContext)
+    const [show, setShow] = useState(true)
+
+    function animateGuess() {
+        setShow(false)
+        setTimeout(() => setShow(true), 3)
+    }
+
+    useEffect(() => {
+        animateGuess()
+    }, [guess])
+
     return(
-        <div className={`${'last-guess'+theme} ${isValid && points <= 100 ? 'valid-guess':'invalid-guess'}`}
+        <div className={`${'last-guess'+theme} ${isValid && points <= 100 ? 'valid-guess':'invalid-guess'} ${show ? 'show-guess':'hide-guess'}`} 
             id={isValid && points >= 90 && points <= 100 ? 'golden-guess':''}>
-            <div className="guess">  
-                {`${guess} ${points > 100 ? `(Hint: ${points})`:""}`}
-            </div>
-            <div className="points">{points > 100 ? 0:points}</div>
+                <div className="guess">  
+                    {`${guess} ${points > 100 ? `(Hint: ${points})`:""}`}
+                </div>
+                <div className="points">{points > 100 ? 0:points}</div>
         </div>
     )
 }

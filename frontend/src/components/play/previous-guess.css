@@ -21,7 +21,15 @@
 
 .last-guess, .last-guess-light {
     min-width: 150px;
-    animation: addGuess 0.2s ease-in-out;
+    animation: addGuess 0.4s ease-in-out;
+}
+
+.show-guess {
+    display: grid;
+}
+
+.hide-guess {
+    display: none;
 }
 
 .teams-1 .last-guess, .teams-1 .last-guess-light {

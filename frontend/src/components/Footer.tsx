@@ -14,11 +14,6 @@ export default function Footer() {
                     <FaGithub/>
                     </div>
                 </a>
-                <a href="https://x.com/osrlazlo" target="blank">
-                    <div className={"footer-icon" + theme}>
-                    <FaTwitter/>
-                    </div>
-                </a>
             </div>
             
         </div>
