@@ -12,10 +12,19 @@ import { Hints } from "./MultiRoundGame";
 import PreviousGuesses from "./PreviousGuess";
 import ButtonWrapper from "./utils/ButtonWrapper";
 import Header from "../utils/Header";
+import ErrorBoundary from "../../ErrorBoundary";
 
-export default function GameScreen() {
+export default function QuickGameWrapper() {
+    return(
+        <ErrorBoundary fallback={'Failed to load categories'}>
+            <QuickGame/>
+        </ErrorBoundary>
+    )
+}
+
+function QuickGame() {
     const params = useParams()
-    const {categories, setCategoriesStatus} = useContext(CategoryContext)
+    const {categories,setCategories} = useContext(CategoryContext)
     const [category, setCategory] = useState<Category>()
     const [isPlaying, setIsPlaying] = useState(false)
     const [isGameOver, setIsGameOver] = useState(false)
@@ -26,18 +35,25 @@ export default function GameScreen() {
 
     const minGuess = 4; const maxGuess = 10
     const [guessAmt, setGuessAmt] = useState(minGuess)
+    const {theme} = useContext(ThemeContext)
+    const [error, setError] = useState<Error|null>(null)
 
-    //load categories if not loaded yet
+    //load categories if not loaded yet 
     useEffect(() => {
         async function loadCategories() {
             const res = await getCategories()
-            if (res.status == 200) {
-                let categories = res.data as Category[]
-                setCategory(categories.find(c => Number(c.id) === Number(params.id)))
-            }
-            setCategoriesStatus(res.status)     
+            try {
+                if (res.status == 200) {
+                    let categories = res.data as Category[]
+                    setCategories(categories)
+                    setCategory(categories.find(c => Number(c.id) === Number(params.id)))
+                } 
+                else setError(new Error(`{"status": "${res.status}", "msg": "${res.msg}"}`)) 
+                
+            } catch (error) {
+                setError(error as Error)
+            } 
         }
-
         if (categories.length > 0)
             setCategory(categories.find(c => Number(c.id) === Number(params.id)))
         else loadCategories()
@@ -88,8 +104,7 @@ export default function GameScreen() {
         setShowTopAnswers(t => !t)
     }
 
-    const {theme} = useContext(ThemeContext)
-
+    if (error) throw error
     return(
         <>
         <Header/>

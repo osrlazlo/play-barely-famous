@@ -12,23 +12,22 @@ import ButtonWrapper from "./utils/ButtonWrapper";
 import Header from "../utils/Header";
 import ErrorBoundary from "../../ErrorBoundary";
 
-export default function MultiRoundGame() {
+export default function MultiRoundGameWrapper() {
     return(
         <>
         <Header/>
         <div className="screen">
             <ErrorBoundary fallback="Failed to load categories">
-                <MultiRoundGameContainer/>
+                <MultiRoundGame/>
             </ErrorBoundary>
         </div>
         </>
     )
 }
 
-function MultiRoundGameContainer() {
+function MultiRoundGame() {
 
     const categoriesFromContext = useContext(CategoryContext)
-    const {setCategoriesStatus, status} = useContext(CategoryContext)
     const [categories, setCategories] = useState([...categoriesFromContext.categories])
     
     const [randomCategories, setRandomCategories] = useState<Category[]>([])
@@ -52,19 +51,24 @@ function MultiRoundGameContainer() {
     const [currentTeam, setCurrentTeam] = useState(0)
     const [currentCategory, setCurrentCategory] = useState(0)
 
+    const [error, setError] = useState<Error|null>(null)
     //load categories if not loaded yet
     useEffect(() => {
         async function loadCategories() {
             const res = await getCategories()
-            if (res.status == 200) {
-              setCategories(res.data)
-            }
-            setCategoriesStatus(res.status)
+            try {
+                if (res.status == 200) {
+                    let categories = res.data as Category[]
+                    setCategories(categories)
+                } 
+                else setError(new Error(`{"status": "${res.status}", "msg": "${res.msg}"}`)) 
+                
+            } catch (error) {
+                setError(error as Error)
+            } 
         }
-        if (categories.length < 1) loadCategories()
+        if (!(categories.length > 0)) loadCategories()
     },[])
-
-    if (status != 200) throw new Error("failed to load categories")
 
     useEffect(() => {
         if (guessAmt == 0) {
@@ -171,6 +175,8 @@ function MultiRoundGameContainer() {
         }
 
         const {theme} = useContext(ThemeContext)
+
+    if (error) throw error
     return(
         <div className="screen">
         
