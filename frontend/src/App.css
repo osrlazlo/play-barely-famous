@@ -17,11 +17,38 @@
   animation: fadeIn 0.3s ease-in-out;
   width: 100vw;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   height: 100vh;
+  margin-top: 80px;
+}
+
+.embed-video,.embed-video-light {
+  border: 2px solid white;
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 50px;
+  background-color: white;
+  color: #1a1a1a;
+  transition: all 0.3s ease-in-out;
+}
+
+.embed-video-light {
+   border: 2px solid #242424;
+   background-color: #242424;
+   color: #ffffff;
+}
+
+@media (min-width: 1400px) {
+  .embed-video {
+    margin-left: 100px;
+  }
+
+  .home-page {
+    margin-top: 0px;
+  }
 }
 
 .home-page h1, .home-page h3 {
@@ -52,7 +79,7 @@
 }
 
 #sticky-header {
-  height: fit-content;
+  height: 80px;
   width: 100vw;
   box-sizing: border-box;
   position: sticky;
