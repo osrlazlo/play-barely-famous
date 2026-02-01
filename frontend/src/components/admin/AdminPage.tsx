@@ -2,6 +2,7 @@ import { useState, type FormEvent, } from "react"
 import "./admin-page.css"
 import { handleAddCategory } from "../../../../api/functions/addCategory"
 import Header from "../utils/Header"
+import Footer from "../Footer"
 
 export default function AdminPage() {
 
@@ -52,6 +53,7 @@ export default function AdminPage() {
                 <button type="submit">Add new category</button>
             </form>
         </div>
+        <Footer/>
         </>
     )
 }

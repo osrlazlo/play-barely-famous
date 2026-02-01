@@ -12,23 +12,7 @@
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  box-sizing: border-box;
-  width: 100vw;
+  text-decoration: none;
 }
 
 h1 {

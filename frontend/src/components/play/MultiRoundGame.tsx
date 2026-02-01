@@ -11,6 +11,7 @@ import TopAnswers from "./TopAnswers";
 import ButtonWrapper from "./utils/ButtonWrapper";
 import Header from "../utils/Header";
 import ErrorBoundary from "../../ErrorBoundary";
+import Footer from "../Footer";
 
 export default function MultiRoundGameWrapper() {
     return(
@@ -21,6 +22,7 @@ export default function MultiRoundGameWrapper() {
                 <MultiRoundGame/>
             </ErrorBoundary>
         </div>
+        <Footer/>
         </>
     )
 }
@@ -58,7 +60,7 @@ function MultiRoundGame() {
             const res = await getCategories()
             try {
                 if (res.status == 200) {
-                    let categories = res.data as Category[]
+                    let categories = res.data.categories as Category[]
                     setCategories(categories)
                 } 
                 else setError(new Error(`{"status": "${res.status}", "msg": "${res.msg}"}`)) 
@@ -177,9 +179,7 @@ function MultiRoundGame() {
         const {theme} = useContext(ThemeContext)
 
     if (error) throw error
-    return(
-        <div className="screen">
-        
+    return(        
         <div className="game-screen">
             
             { !isPlaying && categories ?
@@ -246,7 +246,6 @@ function MultiRoundGame() {
                     </div>
                 </div>:""}
         </div>
-        </div>
     )
 }
 
@@ -299,10 +298,6 @@ export function Hints() {
                     <GuessExample guess="spderman" match="Spider-Man" isMatch={true}/>
                     <GuessExample guess="atnt" match="AT&T" isMatch={true}/>
 
-                <p className="subtitle">Subtitles may be recognized but it is better to guess the full name, for example:</p>
-                    <GuessExample guess="endgame" match="Avengers: Endgame" isMatch={true}/>
-                    <GuessExample guess="the way of water" match="Avatar: The Way of Water" isMatch={true}/>
-                
                 <p className="subtitle">You must be specific with numbered items, for example:</p>
                     <GuessExample guess="spiderman" match="Spider-Man" isMatch={true}/>
                     <GuessExample guess="spiderman" match="Spider-Man 2" isMatch={false}/>

@@ -7,6 +7,7 @@ import Header from "./utils/Header"
 import type { Category } from "./play/interfaces"
 import ErrorBoundary from "../ErrorBoundary"
 import { getCategories } from "../../../api/functions/getCategories"
+import Footer from "./Footer"
 
 export default function CategoriesWrapper() {
     return(
@@ -24,6 +25,7 @@ export default function CategoriesWrapper() {
             </div>
         </div>
         </div>
+        <Footer/>
         </>
     )
 }
@@ -36,9 +38,10 @@ function Categories() {
     useEffect(() => {
         async function loadCategories() {
             const res = await getCategories()
+            console.log('res', res)
             try {
                 if (res.status == 200) {
-                    let categories = res.data as Category[]
+                    let categories = res.data.categories as Category[]
                     setCategories(categories)
                 } 
                 else setError(new Error(`{"status": "${res.status}", "msg": "${res.msg}"}`)) 

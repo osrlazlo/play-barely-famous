@@ -35,7 +35,7 @@ function App() {
           console.log('loading categories')
             const res = await getCategories()
             if (res.status == 200) {
-              setCategories(res.data)
+              setCategories(res.data.categories as Category[])
             }
             setCategoriesStatus(res.status)     
         }

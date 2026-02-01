@@ -13,12 +13,18 @@ import PreviousGuesses from "./PreviousGuess";
 import ButtonWrapper from "./utils/ButtonWrapper";
 import Header from "../utils/Header";
 import ErrorBoundary from "../../ErrorBoundary";
+import Footer from "../Footer";
 
 export default function QuickGameWrapper() {
     return(
+        <>
+        <Header/>
         <ErrorBoundary fallback={'Failed to load categories'}>
             <QuickGame/>
         </ErrorBoundary>
+        <Footer/>
+        </>
+        
     )
 }
 
@@ -44,7 +50,7 @@ function QuickGame() {
             const res = await getCategories()
             try {
                 if (res.status == 200) {
-                    let categories = res.data as Category[]
+                    let categories = res.data.categories as Category[]
                     setCategories(categories)
                     setCategory(categories.find(c => Number(c.id) === Number(params.id)))
                 } 
@@ -107,9 +113,7 @@ function QuickGame() {
     if (error) throw error
     return(
         <>
-        <Header/>
         <div className="screen">
-        
         <div className="game-screen">
         { category ?
         <div className="full-header">
@@ -119,6 +123,15 @@ function QuickGame() {
                     <div className="source">Source: {category.source}</div>
                     <div className="updated">Updated: {formatDateAdded(category.dateAdded)}</div>
                 </div>
+ 
+                { !isPlaying && category ?
+                <div className="select-options">
+                    <SelectAmount name="guesses" value={guessAmt} min={minGuess} max={maxGuess} setValue={setGuessAmt}/>
+                    <ButtonWrapper>
+                    <button className="start-game-button"
+                        onClick={() => startGame()}>START GAME</button>
+                    </ButtonWrapper>         
+                </div>:"" }  
             </div>
             { isGameOver && !showTopAnswers ? 
                 <ButtonWrapper>
@@ -127,18 +140,12 @@ function QuickGame() {
                 </ButtonWrapper>
                 :""}
             { showTopAnswers && category ? 
-                <TopAnswers category={category}/>:""}    
+                <TopAnswers category={category}/>:""}  
+
         </div>:"" }
 
         { !isPlaying && category ?
             <div className="select-and-hints">
-            <div className="select-options">
-                <SelectAmount name="guesses" value={guessAmt} min={minGuess} max={maxGuess} setValue={setGuessAmt}/>
-                <ButtonWrapper>
-                <button className="start-game-button"
-                    onClick={() => startGame()}>START GAME</button>
-                </ButtonWrapper>         
-            </div>
             <Hints/>
             </div>:"" }
 

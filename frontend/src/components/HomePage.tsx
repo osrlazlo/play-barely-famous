@@ -4,6 +4,7 @@ import ButtonWrapper from "./play/utils/ButtonWrapper";
 import Header from "./utils/Header";
 import { useContext } from "react";
 import { ThemeContext } from "../App";
+import Footer from "./Footer";
 
 export default function HomePage() {
     const {theme} = useContext(ThemeContext)
@@ -35,7 +36,7 @@ export default function HomePage() {
             </div>
 
             <div className={"embed-video"+theme}>
-                <h4>This game is inspired (more like copied) from SIDEMEN TOP 100</h4>
+                <h4>Credits for the game concept go to SIDEMEN (probably Simon's idea)</h4>
                 <iframe width="560" height="315" 
                     src="https://www.youtube.com/embed/qcD8nbFwVfU?si=wi4luOio5038RaQO" 
                     title="YouTube video player" 
@@ -44,6 +45,7 @@ export default function HomePage() {
                     allowFullScreen></iframe>
             </div>
         </div>
+        <Footer/>
         </>
     )
 }
