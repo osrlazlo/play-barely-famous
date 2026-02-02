@@ -151,6 +151,7 @@ function MultiRoundGame() {
             setIsRoundOver(false)
             setCurrentRound(r => r+1)
             setCurrentCategory(c => c+1)
+            setGuesses([])
             teams.map(t => 
                 {t.score = t.score
                 t.guesses = []})
