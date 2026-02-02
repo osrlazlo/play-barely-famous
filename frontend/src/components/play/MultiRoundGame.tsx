@@ -2,7 +2,7 @@ import { CategoryContext, ThemeContext } from "../../App";
 import React, { useContext, useEffect, useState, type ReactElement } from "react";
 import { getCategories } from "../../../../api/functions/getCategories";
 import { formatDateAdded } from "../CategoryCard";
-import type { GuessResult, Category, Team } from "./interfaces";
+import type { GuessResult, Category, Team } from "../interfaces";
 import "./game.css"
 import { checkGuess, createTeams, findWinnerIndex, getRandomInt, shuffleArray } from "./helpers";
 import SelectAmount from "./utils/SelectAmount";
@@ -42,11 +42,11 @@ function MultiRoundGame() {
     const [showTopAnswers, setShowTopAnswers] = useState(false)
 
     const minGuess = 1; const maxGuess = 10
-    const [guessAmt, setGuessAmt] = useState(minGuess)
+    const [guessAmt, setGuessAmt] = useState(4)
     const [guessReset, setGuessReset] = useState(0)
     const minTeams = 1; const maxTeams = 3
     const [teamsAmt, setTeamsAmt] = useState(minTeams)
-    const minRounds = 1; const maxRounds = 3
+    const minRounds = 1; const maxRounds = categories && categories.length > 10 ? 10:categories.length
     const [roundsAmt, setRoundsAmt] = useState(minRounds)
     const [currentRound, setCurrentRound] = useState(minRounds)
     const [teams, setTeams] = useState<Team[]>([])
@@ -205,7 +205,7 @@ function MultiRoundGame() {
                             <div className="category">
                                 <div className="title">{randomCategories[currentCategory].name}</div>
                                 <div className="source">Source: {randomCategories[currentCategory].source}</div>
-                                <div className="updated">Updated: {formatDateAdded(randomCategories[currentCategory].dateAdded)}</div>
+                                <div className="updated">Updated: {formatDateAdded(randomCategories[currentCategory].dateUpdated)}</div>
                             </div>
                             <div className="guess-remaining">
                                 <div className={"num" + theme}> {Math.ceil(guessAmt/teamsAmt)}</div> guess(es) left</div>

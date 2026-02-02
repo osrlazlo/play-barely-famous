@@ -22,7 +22,7 @@ export default function HomePage() {
                     <Link to={"/play"}><button className="play-button">PLAY</button></Link>
                 </ButtonWrapper>
                 <ButtonWrapper>
-                    <Link to={"/quick"}><button className="play-button">QUICK GAME</button></Link>  
+                    <Link to={"/quick"}><button className="quick-button">QUICK GAME</button></Link>  
                 </ButtonWrapper>
                 
                 <div className="instructions">

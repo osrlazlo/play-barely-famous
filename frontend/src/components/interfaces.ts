@@ -17,7 +17,8 @@ export interface Category {
     plays:number|string
     data:CategoryElement[]
     source:string
-    dateAdded:string|Date
+    dateUpdated:string|Date
+    tags?:string[]
 }
 
 export interface Team {

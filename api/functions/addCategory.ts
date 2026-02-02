@@ -3,7 +3,7 @@ const API_PATH = import.meta.env.VITE_API_PATH
 
 export async function handleAddCategory(name:string, file:File, source:string, password:string) {
     if (!name || !file || !source || !password) return
-    console.log(file)
+    //console.log(file)
     const data = await parseCSVtoJSON(file)
     console.log("data", data)
 

@@ -1,5 +1,5 @@
 import { FaTrophy } from "react-icons/fa";
-import type { Team } from "./interfaces";
+import type { Team } from "../interfaces";
 import PreviousGuesses from "./PreviousGuess";
 
 interface TeamCardProps {

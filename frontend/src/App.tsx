@@ -7,7 +7,7 @@ import QuickGame from './components/play/QuickGame'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { getCategories } from "../../api/functions/getCategories"
 import HomePage from './components/HomePage'
-import type { Category } from './components/play/interfaces'
+import type { Category } from './components/interfaces'
 import MultiRoundGame from './components/play/MultiRoundGame'
 
 const router = createBrowserRouter([

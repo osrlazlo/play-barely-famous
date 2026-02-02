@@ -4,7 +4,7 @@ import { Link } from "react-router"
 import {CategoryContext} from "../App"
 import { Suspense, useContext, useEffect, useState } from "react"
 import Header from "./utils/Header"
-import type { Category } from "./play/interfaces"
+import type { Category } from "./interfaces"
 import ErrorBoundary from "../ErrorBoundary"
 import { getCategories } from "../../../api/functions/getCategories"
 import Footer from "./Footer"
@@ -38,7 +38,7 @@ function Categories() {
     useEffect(() => {
         async function loadCategories() {
             const res = await getCategories()
-            console.log('res', res)
+            //console.log('res', res)
             try {
                 if (res.status == 200) {
                     let categories = res.data.categories as Category[]
@@ -59,7 +59,7 @@ function Categories() {
         <>
         {categories?.map(c => 
         <Link key={c.id} to={`play/${c.id}`}>
-            <CategoryCard  name={c.name} source={c.source} id={c.id} dateAdded={c.dateAdded}/>
+            <CategoryCard  name={c.name} source={c.source} id={c.id} dateUpdated={c.dateUpdated} tags={c.tags}/>
         </Link>)}
         </>
      )

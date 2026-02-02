@@ -1,5 +1,5 @@
 import { isMatch } from "../../guess_match/guessMatch"
-import type { Category, CategoryElement, GuessResult, Team } from "./interfaces"
+import type { Category, CategoryElement, GuessResult, Team } from "../interfaces"
 
 export function checkGuess(guess:string, category:Category) {
     if (!category) return

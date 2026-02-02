@@ -1,4 +1,4 @@
-import type { Category } from "../../frontend/src/components/play/interfaces"
+import type { Category } from "../../frontend/src/components/interfaces"
 
 const API_PATH = import.meta.env.VITE_API_PATH
 export async function getCategories() {
@@ -9,7 +9,7 @@ export async function getCategories() {
 
     let result
     try {
-        console.log('fetch',`${API_PATH}/get`)
+       // console.log('fetch',`${API_PATH}/get`)
         const res = await fetch(`${API_PATH}/get`, options)
         let data
         if (res.ok) data = await res.json()

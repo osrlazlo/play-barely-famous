@@ -3,7 +3,7 @@ import { CategoryContext, ThemeContext } from "../../App";
 import { useContext, useEffect, useState } from "react";
 import { getCategories } from "../../../../api/functions/getCategories";
 import { formatDateAdded } from "../CategoryCard";
-import type { GuessResult, Category } from "./interfaces";
+import type { GuessResult, Category } from "../interfaces";
 import "./game.css"
 import { calculateScore, checkGuess } from "./helpers"
 import SelectAmount from "./utils/SelectAmount";
@@ -72,7 +72,7 @@ function QuickGame() {
     //start game
         function startGame() {
             setIsPlaying(true)
-            if (category) console.log(category)
+            //if (category) console.log(category)
         }
         function endGame() {
             setIsGameOver(true)
@@ -121,7 +121,7 @@ function QuickGame() {
                         <div className="category">
                             <div className="title">{category.name}</div>
                             <div className="source">Source: {category.source}</div>
-                            <div className="updated">Updated: {formatDateAdded(category.dateAdded)}</div>
+                            <div className="updated">Updated: {formatDateAdded(category.dateUpdated)}</div>
                         </div>
         
                         { !isPlaying && category ?

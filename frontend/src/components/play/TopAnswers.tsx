@@ -1,4 +1,4 @@
-import type { Category } from "./interfaces";
+import type { Category } from "../interfaces";
 
 interface TopAnswersProps {
     category:Category

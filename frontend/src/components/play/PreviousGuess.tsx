@@ -1,6 +1,6 @@
 
 import { useContext, useEffect, useState } from "react";
-import type { GuessResult } from "./interfaces";
+import type { GuessResult } from "../interfaces";
 import "./previous-guess.css"
 import { ThemeContext } from "../../App";
 
