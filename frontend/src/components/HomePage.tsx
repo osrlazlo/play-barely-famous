@@ -4,7 +4,7 @@ import ButtonWrapper from "./play/utils/ButtonWrapper";
 import Header from "./utils/Header";
 import { useContext } from "react";
 import { ThemeContext } from "../App";
-import Footer from "./Footer";
+import Footer from "./utils/Footer";
 
 export default function HomePage() {
     const {theme} = useContext(ThemeContext)

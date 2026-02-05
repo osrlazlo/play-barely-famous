@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { FaGithub, FaTwitter } from "react-icons/fa"
-import { ThemeContext } from "../App"
+import { ThemeContext } from "../../App"
 
 export default function Footer() {
     const date = new Date()

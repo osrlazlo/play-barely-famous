@@ -13,7 +13,7 @@ import PreviousGuesses from "./PreviousGuess";
 import ButtonWrapper from "./utils/ButtonWrapper";
 import Header from "../utils/Header";
 import ErrorBoundary from "../../ErrorBoundary";
-import Footer from "../Footer";
+import Footer from "../utils/Footer";
 
 export default function QuickGameWrapper() {
     return(

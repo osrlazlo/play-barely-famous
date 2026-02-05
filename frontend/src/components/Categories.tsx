@@ -7,7 +7,8 @@ import Header from "./utils/Header"
 import type { Category } from "./interfaces"
 import ErrorBoundary from "../ErrorBoundary"
 import { getCategories } from "../../../api/functions/getCategories"
-import Footer from "./Footer"
+import Footer from "./utils/Footer"
+import LoadingSpinner from './utils/LoadingSpinner'
 
 export default function CategoriesWrapper() {
     return(
@@ -33,16 +34,19 @@ export default function CategoriesWrapper() {
 function Categories() {
     const {categories, setCategories} = useContext(CategoryContext)
     const [error, setError] = useState<Error|null>(null)
+    const [isLoading,setIsLoading] = useState(false)
 
     //load categories if not loaded yet
     useEffect(() => {
         async function loadCategories() {
-            const res = await getCategories()
+            setIsLoading(true)
             //console.log('res', res)
             try {
+                const res = await getCategories()
                 if (res.status == 200) {
                     let categories = res.data.categories as Category[]
                     setCategories(categories)
+                    setIsLoading(false)
                 } 
                 else setError(new Error(`{"status": "${res.status}", "msg": "${res.msg}"}`)) 
                 
@@ -56,8 +60,10 @@ function Categories() {
     if (error) throw error
 
     return(
-        <>
-        {categories?.map(c => 
+        <> 
+        {isLoading ? 
+        <LoadingSpinner width='96'/>
+        : categories?.map(c => 
         <Link key={c.id} to={`play/${c.id}`}>
             <CategoryCard  name={c.name} source={c.source} id={c.id} dateUpdated={c.dateUpdated} tags={c.tags}/>
         </Link>)}

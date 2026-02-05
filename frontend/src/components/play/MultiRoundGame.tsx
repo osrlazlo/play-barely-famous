@@ -11,7 +11,7 @@ import TopAnswers from "./TopAnswers";
 import ButtonWrapper from "./utils/ButtonWrapper";
 import Header from "../utils/Header";
 import ErrorBoundary from "../../ErrorBoundary";
-import Footer from "../Footer";
+import Footer from "../utils/Footer";
 
 export default function MultiRoundGameWrapper() {
     return(
@@ -44,7 +44,7 @@ function MultiRoundGame() {
     const minGuess = 1; const maxGuess = 10
     const [guessAmt, setGuessAmt] = useState(4)
     const [guessReset, setGuessReset] = useState(0)
-    const minTeams = 1; const maxTeams = 3
+    const minTeams = 1; const maxTeams = 6
     const [teamsAmt, setTeamsAmt] = useState(minTeams)
     const minRounds = 1; const maxRounds = categories && categories.length > 10 ? 10:categories.length
     const [roundsAmt, setRoundsAmt] = useState(minRounds)

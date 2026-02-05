@@ -6,7 +6,6 @@
     width: 100vw;
     min-width: 600px;
     height: fit-content;
-    border: 1px solid red;
     box-sizing: border-box;
     padding: 15px;
 }
@@ -24,5 +23,17 @@
 
 #status-error {
     color: red; 
+}
+
+#password-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+#show-pass-button:hover {
+    cursor: pointer;
+    color: gold;
 }
 

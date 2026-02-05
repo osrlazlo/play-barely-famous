@@ -2,7 +2,16 @@ import { Request, Response } from "express";
 import { setCORSHeaders } from "../helpers.js";
 import mongodb, { COL_CATEGORIES } from "../mongodbClient.js";
 import bcrypt from "bcryptjs";
+import type { CategoryElement } from "../../frontend/src/components/interfaces.ts"
 import { Condition, ObjectId } from "mongodb";
+
+interface AddReqBody {
+    name:string
+    data: CategoryElement[]
+    source: string
+    password: string
+    tags: string
+}
 
 export default async function handler(req:Request, res:Response) {
     setCORSHeaders(res)
@@ -16,10 +25,8 @@ export default async function handler(req:Request, res:Response) {
     
     try {
        
-       const {name, data, source, password} = req.body
-       
-       let tags:string[] = []
-
+        const {name, data, source, password, tags} = req.body as AddReqBody
+        const tagsArray = tags.split(',') 
         /* 
         const hash = await bcrypt.hash(password,10)
         const admin = {
@@ -61,7 +68,7 @@ export default async function handler(req:Request, res:Response) {
                 source,
                 plays: Number(0),
                 dateUpdated: new Date(),
-                tags
+                tags: tagsArray,
             }
 
             let addCategory = await db.collection(COL_CATEGORIES).insertOne(mongoCategory)
