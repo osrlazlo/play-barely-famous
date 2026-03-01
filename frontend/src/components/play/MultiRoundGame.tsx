@@ -6,7 +6,7 @@ import type { GuessResult, Category, Team } from "../interfaces";
 import "./game.css"
 import { checkGuess, createTeams, findWinnerIndex, getRandomInt, shuffleArray } from "./helpers";
 import SelectAmount from "./utils/SelectAmount";
-import TeamCard from "./TeamCard";
+import TeamCard, { TeamName } from "./TeamCard";
 import TopAnswers from "./TopAnswers";
 import ButtonWrapper from "./utils/ButtonWrapper";
 import Header from "../utils/Header";
@@ -29,31 +29,41 @@ export default function MultiRoundGameWrapper() {
 
 function MultiRoundGame() {
 
-    const categoriesFromContext = useContext(CategoryContext)
-    const [categories, setCategories] = useState([...categoriesFromContext.categories])
-    
-    const [randomCategories, setRandomCategories] = useState<Category[]>([])
+    //Game States
     const [isPlaying, setIsPlaying] = useState(false)
     const [isGameOver, setIsGameOver] = useState(false)
     const [isRoundOver, setIsRoundOver] = useState(false)
-    const [guesses, setGuesses] = useState<GuessResult[]>([])
-    const [guess, setGuess] = useState("")
-    const [errorMsg, setErrorMsg] = useState<ReactElement|null>(null)
     const [showTopAnswers, setShowTopAnswers] = useState(false)
 
+    //Categories
+    const categoriesFromContext = useContext(CategoryContext)
+    const [categories, setCategories] = useState([...categoriesFromContext.categories])
+    const [randomCategories, setRandomCategories] = useState<Category[]>([])
+    const [currentCategory, setCurrentCategory] = useState(0)
+
+    //Guess
     const minGuess = 1; const maxGuess = 10
     const [guessAmt, setGuessAmt] = useState(4)
     const [guessReset, setGuessReset] = useState(0)
-    const minTeams = 1; const maxTeams = 6
-    const [teamsAmt, setTeamsAmt] = useState(minTeams)
+    const [guesses, setGuesses] = useState<GuessResult[]>([])
+    const [guess, setGuess] = useState("")
+
+    //Rounds
     const minRounds = 1; const maxRounds = categories && categories.length > 10 ? 10:categories.length
     const [roundsAmt, setRoundsAmt] = useState(minRounds)
     const [currentRound, setCurrentRound] = useState(minRounds)
+    
+    //Teams
+    const minTeams = 1; const maxTeams = 6
+    const [teamsAmt, setTeamsAmt] = useState(minTeams)
     const [teams, setTeams] = useState<Team[]>([])
+    const [teamNames, setTeamNames] = useState<string[]>(new Array(maxTeams).fill(''))
     const [currentTeam, setCurrentTeam] = useState(0)
-    const [currentCategory, setCurrentCategory] = useState(0)
 
+    //Errors
     const [error, setError] = useState<Error|null>(null)
+    const [errorMsg, setErrorMsg] = useState<ReactElement|null>(null)
+   
     //load categories if not loaded yet
     useEffect(() => {
         async function loadCategories() {
@@ -90,7 +100,7 @@ function MultiRoundGame() {
             let randomCategories = getGandomCategories()
             //console.log("random",randomCategories)
             setRandomCategories(randomCategories)
-            let teams = createTeams(teamsAmt)
+            let teams = createTeams(teamsAmt, teamNames)
             setTeams(teams)
             setGuessReset(guessAmt*teamsAmt)
             teams[0].isCurrentTeam = true
@@ -178,6 +188,7 @@ function MultiRoundGame() {
         }
 
         const {theme} = useContext(ThemeContext)
+        console.log('team names:',teamNames)
 
     if (error) throw error
     return(        
@@ -189,6 +200,9 @@ function MultiRoundGame() {
                     <SelectAmount name="players/teams" value={teamsAmt} min={minTeams} max={maxTeams} setValue={setTeamsAmt}/>
                     <SelectAmount name="rounds" value={roundsAmt} min={minRounds} max={maxRounds} setValue={setRoundsAmt}/>
                     <SelectAmount name="guesses (per round, per team)" value={guessAmt} min={minGuess} max={maxGuess} setValue={setGuessAmt}/>
+                    
+                    {teamNames.map((_, i) => (i+1 <= teamsAmt) ? <TeamName key={i} teams={teamNames} index={i} setTeamNames={setTeamNames}/>:"" )}
+
                     <ButtonWrapper>
                         <button className="start-game-button"
                         onClick={() => startGame()}>START GAME</button>     
@@ -314,10 +328,10 @@ interface GuessExampleProps {
     match:string
     isMatch:boolean
 }
+
 function GuessExample({guess,match,isMatch}:GuessExampleProps) {
     const {theme} = useContext(ThemeContext)
     return(
         <p><span className={"example" + theme}>"{guess}"</span> {isMatch ? "will":"will NOT"} match <span className={"example" + theme}>"{match}"</span></p>
     )
-
 }

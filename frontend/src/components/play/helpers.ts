@@ -50,10 +50,11 @@ export function shuffleArray(array:Object[]) {
     }
 }
 
-export function createTeams(amt:number) {
+export function createTeams(amt:number, teamNames:string[]) {
     let teams:Team[] = []
     for (let i=0; i<amt; i++) {
-        teams.push({name:`Team${i+1}`, guesses:[], score:0, isCurrentTeam:false, isWinner:false})
+        let name = teamNames[i] ? teamNames[i]:`Team ${i+1}`
+        teams.push({name, guesses:[], score:0, isCurrentTeam:false, isWinner:false})
     }
     return teams
 }

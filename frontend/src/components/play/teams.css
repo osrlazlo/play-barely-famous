@@ -1,0 +1,86 @@
+.teams-container {
+    display: flex;
+    width: 90vw;
+    gap: 15px;
+    justify-items: center;
+    justify-content: center;
+    animation: fadeIn 0.5s ease-in-out;
+    margin-top: 35px;
+}
+
+.team-card, .team-card-light {
+    border: 3px solid white;
+    border-radius: 15px;
+    padding: 0px 10px;
+    max-width: 500px;
+    transition: all 0.3s ease-in-out;
+    margin-top: 15px;
+    background-color: rgb(56, 56, 56);
+}
+
+.team-card-light {
+    border-color: black;
+    background-color: white;
+}
+
+.teams-1 {
+    width: 100%;
+    min-width: 300px;
+}
+.teams-2 {
+    width: 45vw;
+    min-width: 250px;
+}
+.teams-3 {
+    width: 27vw;
+    min-width: 200px;
+}
+
+.team-card .score {
+    font-weight: bolder;
+    font-size: xx-large;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.current-team {
+    border-color: #646cff;
+    transform: scale(1.1);
+    margin: 0px 15px;
+    box-shadow: 0px 0px 8px hsl(237, 100%, 80%);
+}
+
+.winning-team, .winning-team-light {
+    border-color: goldenrod;
+    transform: scale(1.05);
+    margin: 0px 15px;
+    box-shadow: 0px 0px 20px goldenrod
+}
+
+.winning-team .score {
+    color: gold;
+    gap: 10px;
+}
+
+.winning-team-light .score {
+    color: goldenrod;
+    gap: 10px;
+}
+
+.team-name-select {
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 5px;
+}
+
+#team-name-select {
+    font-style: italic;
+    font-weight: normal;
+    padding: 2px;
+}
