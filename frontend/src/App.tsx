@@ -21,14 +21,20 @@ const router = createBrowserRouter([
 let setCategoriesPlaceholder:React.Dispatch<React.SetStateAction<Category[]>> = ()=>{}
 export const CategoryContext = createContext({categories:[] as Category[], setCategories:setCategoriesPlaceholder})
 
-let setThemePlaceholder:React.Dispatch<React.SetStateAction<string>> = ()=>{}
-export const ThemeContext = createContext({theme:"", setTheme:setThemePlaceholder})
+let setStringPlaceholder:React.Dispatch<React.SetStateAction<string>> = ()=>{}
+export const ThemeContext = createContext({theme:"", setTheme:setStringPlaceholder})
+
+export const FilterContext = createContext({tagFilter:'', setTagFilter:setStringPlaceholder, sortFilter:'', setSortFilter:setStringPlaceholder})
+
+
 
 function App() {
 
     const [categories, setCategories] = useState<Category[]>([])
     const [theme, setTheme] = useState("")
     const [categoriesStatus, setCategoriesStatus] = useState<number|undefined>(undefined)
+    const [tagFilter, setTagFilter] = useState('')
+    const [sortFilter, setSortFilter] = useState('')
 
     useEffect(() => {
         async function loadCategories() {
@@ -44,32 +50,35 @@ function App() {
 
   return (
     <div className={"page-container" + theme}>
-    <CategoryContext.Provider value={{categories:categories, setCategories: setCategories}}>
-    <ThemeContext.Provider value={{theme:theme, setTheme:setTheme}}>
+    <FilterContext.Provider value={{tagFilter, setTagFilter, sortFilter, setSortFilter}}>
+    <CategoryContext.Provider value={{categories, setCategories}}>
+    <ThemeContext.Provider value={{theme, setTheme}}>
       <RouterProvider router={router}/>
     </ThemeContext.Provider>
     </CategoryContext.Provider>
+    </FilterContext.Provider>
     </div>
   )
 }
 export default App
 
-import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
+import { MdDarkMode, MdLightMode, MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 export function ThemeToggle() {
   const {theme,setTheme} = useContext(ThemeContext)
+  const lightTheme = '-light'
 
   //default theme is dark
   function toggleTheme() {
-    setTheme(t => t == "-light" ? "":"-light")
+    setTheme(t => t == lightTheme ? "":lightTheme)
   }
 
   return(
     <div id={'theme-toggle'+ theme} onClick={()=>toggleTheme()}>
-      <MdOutlineDarkMode/>
+      {theme == lightTheme ? <MdOutlineDarkMode/>:<MdDarkMode/>}
       <div id='bar'>
         <div id='circle'/>
       </div>
-      <MdOutlineLightMode/>
+      {theme == lightTheme ? <MdLightMode/>:<MdOutlineLightMode/>}
     </div>
   )
 }

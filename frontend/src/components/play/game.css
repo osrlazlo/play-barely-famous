@@ -82,28 +82,6 @@
     margin: 25px;
 }
 
-.screen {
-    box-sizing: border-box;
-    width: 90vw;
-    width: 100vw;
-    height: 100%;
-    padding: 0px 30px 30px 30px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.game-screen {
-    animation: fadeIn 0.1s ease-in;
-    margin-top: 10px;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .guesses-container {
     display: flex;
     flex-direction: column;
@@ -285,48 +263,3 @@
 #input-error input {
     border-color: rgb(255, 72, 72);
 }
-
-.hints {
-    border: 3px solid rgb(151, 151, 151);
-    font-size: larger;
-    margin-top: 15px;
-    padding: 10px 20px;
-    border-radius: 25px;
-    max-width: 600px;
-    scale: 0.9;
-}
-
-.hints p {
-    margin: 5px 0px;
-}
-
-.hints .subtitle {
-    font-weight: bold;
-    margin-top: 35px;
-}
-
-.hints #section-title {
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: x-large;
-}
-
-.hints .example {
-    font-weight: bold;
-    color: rgb(255, 138, 138);
-}
-
-.hints .example-light {
-    font-weight: bold;
-    color: rgb(255, 68, 35);
-}
-
-.select-and-hints {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-    margin-top: 50px;
-}
-

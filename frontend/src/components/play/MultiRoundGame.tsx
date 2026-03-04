@@ -6,12 +6,13 @@ import type { GuessResult, Category, Team } from "../interfaces";
 import "./game.css"
 import { checkGuess, createTeams, findWinnerIndex, getRandomInt, shuffleArray } from "./helpers";
 import SelectAmount from "./utils/SelectAmount";
-import TeamCard, { TeamName } from "./TeamCard";
+import TeamCard from "./TeamCard";
 import TopAnswers from "./TopAnswers";
 import ButtonWrapper from "./utils/ButtonWrapper";
 import Header from "../utils/Header";
 import ErrorBoundary from "../../ErrorBoundary";
 import Footer from "../utils/Footer";
+import ExtraSettings from "./ExtraSettings";
 
 export default function MultiRoundGameWrapper() {
     return(
@@ -53,6 +54,8 @@ function MultiRoundGame() {
     const [roundsAmt, setRoundsAmt] = useState(minRounds)
     const [currentRound, setCurrentRound] = useState(minRounds)
     
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+
     //Teams
     const minTeams = 1; const maxTeams = 6
     const [teamsAmt, setTeamsAmt] = useState(minTeams)
@@ -172,14 +175,23 @@ function MultiRoundGame() {
     //select random category
         function getGandomCategories() {
             let randomCategories:Category[] = []
-            let choseFrom = [...categories]
+            
+            if (selectedCategories.length > 0)
+                selectedCategories.map(id => randomCategories.push(categories.find(c => String(c.id) == id)!))
+            let remaining = roundsAmt-randomCategories.length
+            let choseFrom = [...categories].filter(c => !selectedCategories.includes(String(c.id)))
+            // console.log('chosefrom', choseFrom)
+
             shuffleArray(choseFrom)
-            for (let i=0; i<roundsAmt; i++) {
-                let randomIndex = getRandomInt(0,choseFrom.length)
-                randomCategories.push(choseFrom[randomIndex])
-                choseFrom = (choseFrom.filter(unselected => !randomCategories.find(selected => unselected.id == selected.id))
-                )
-            }
+            
+            if (randomCategories.length < roundsAmt)
+                for (let i=0; i<remaining; i++) {
+                    let randomIndex = getRandomInt(0, choseFrom.length)
+                    randomCategories.push(choseFrom[randomIndex])
+                    choseFrom = (choseFrom.filter(unselected => !randomCategories.find(selected => unselected.id == selected.id))
+                    )
+                }
+            // console.log('randomcats', randomCategories)
             return randomCategories
         }
 
@@ -188,7 +200,7 @@ function MultiRoundGame() {
         }
 
         const {theme} = useContext(ThemeContext)
-        console.log('team names:',teamNames)
+        //console.log('team names:',teamNames)
 
     if (error) throw error
     return(        
@@ -201,15 +213,22 @@ function MultiRoundGame() {
                     <SelectAmount name="rounds" value={roundsAmt} min={minRounds} max={maxRounds} setValue={setRoundsAmt}/>
                     <SelectAmount name="guesses (per round, per team)" value={guessAmt} min={minGuess} max={maxGuess} setValue={setGuessAmt}/>
                     
-                    {teamNames.map((_, i) => (i+1 <= teamsAmt) ? <TeamName key={i} teams={teamNames} index={i} setTeamNames={setTeamNames}/>:"" )}
-
                     <ButtonWrapper>
                         <button className="start-game-button"
                         onClick={() => startGame()}>START GAME</button>     
                     </ButtonWrapper>
-                             
                 </div>
-                <Hints/> 
+                <ExtraSettings
+                    //choose categories
+                    selectedCategories={selectedCategories}
+                    setSelectedCategories={setSelectedCategories}
+                    roundsAmt={roundsAmt}
+
+                    //change team names
+                    teamNames={teamNames}
+                    teamsAmt={teamsAmt}
+                    setTeamNames={setTeamNames}
+                />  
                 </div>:"" }
 
             { isPlaying && randomCategories[currentCategory] ? 
@@ -256,7 +275,7 @@ function MultiRoundGame() {
                     </div>
                     <div className="teams-container">
                         {teams?.map(t => 
-                            <TeamCard key={t.name} team={t} n={teamsAmt} theme={theme}/>
+                            <TeamCard key={t.name} team={t} n={teamsAmt}/>
                         )}
                     </div>
                 </div>:""}
@@ -299,39 +318,5 @@ export function ErrorMsg({guess}:ErrorMsgProps) {
             <p>Already guessed "{guess}"
             <br/>You may need to try again with more precision</p>
         </div>
-    )
-}
-
-export function Hints() {
-    const {theme} = useContext(ThemeContext)
-    return(
-        <div className="hints">
-            <p id="section-title">Some notes and hints</p>
-            <div>
-                <p>Be as precise as possible. Guesses are case insensitive.</p> 
-                <p className="subtitle">Some small typos/imprecisions are acceptable, for example:</p>
-                    <GuessExample guess="spderman" match="Spider-Man" isMatch={true}/>
-                    <GuessExample guess="atnt" match="AT&T" isMatch={true}/>
-
-                <p className="subtitle">You must be specific with numbered items, for example:</p>
-                    <GuessExample guess="spiderman" match="Spider-Man" isMatch={true}/>
-                    <GuessExample guess="spiderman" match="Spider-Man 2" isMatch={false}/>
-
-                <p className="subtitle">For some categories, if your guess is <span className={"example" + theme}>wrong but within the top 110,</span> the rank will be given as a hint</p>
-            </div>
-        </div>
-    )
-}
-
-interface GuessExampleProps {
-    guess:string
-    match:string
-    isMatch:boolean
-}
-
-function GuessExample({guess,match,isMatch}:GuessExampleProps) {
-    const {theme} = useContext(ThemeContext)
-    return(
-        <p><span className={"example" + theme}>"{guess}"</span> {isMatch ? "will":"will NOT"} match <span className={"example" + theme}>"{match}"</span></p>
     )
 }

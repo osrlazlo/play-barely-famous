@@ -1,6 +1,7 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import "./categories.css"
-import { ThemeContext } from "../App"
+import { CategoryContext, ThemeContext } from "../App"
+import type { Category } from "./interfaces"
 
 interface CategoryCardProps {
     id:number|string

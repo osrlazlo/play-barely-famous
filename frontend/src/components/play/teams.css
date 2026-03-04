@@ -36,9 +36,9 @@
     min-width: 200px;
 }
 
-.team-card .score {
+.team-card .score, .team-card-light .score  {
     font-weight: bolder;
-    font-size: xx-large;
+    font-size: x-large;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -66,21 +66,4 @@
 .winning-team-light .score {
     color: goldenrod;
     gap: 10px;
-}
-
-.team-name-select {
-    border-radius: 5px;
-    box-sizing: border-box;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    margin: 5px;
-}
-
-#team-name-select {
-    font-style: italic;
-    font-weight: normal;
-    padding: 2px;
 }

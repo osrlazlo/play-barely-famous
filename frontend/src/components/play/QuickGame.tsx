@@ -8,12 +8,12 @@ import "./game.css"
 import { calculateScore, checkGuess } from "./helpers"
 import SelectAmount from "./utils/SelectAmount";
 import TopAnswers from "./TopAnswers";
-import { Hints } from "./MultiRoundGame";
 import PreviousGuesses from "./PreviousGuess";
 import ButtonWrapper from "./utils/ButtonWrapper";
 import Header from "../utils/Header";
 import ErrorBoundary from "../../ErrorBoundary";
 import Footer from "../utils/Footer";
+import ExtraSettings, { Hints } from "./ExtraSettings";
 
 export default function QuickGameWrapper() {
     return(

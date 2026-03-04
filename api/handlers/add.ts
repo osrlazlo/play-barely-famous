@@ -26,7 +26,7 @@ export default async function handler(req:Request, res:Response) {
     try {
        
         const {name, data, source, password, tags} = req.body as AddReqBody
-        const tagsArray = tags.split(',') 
+        const tagsArray = tags.split(',').map(s => s.trim()) 
         /* 
         const hash = await bcrypt.hash(password,10)
         const admin = {
