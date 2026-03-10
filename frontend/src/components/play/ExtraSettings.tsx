@@ -120,7 +120,7 @@ export function TeamName({teams, index, setTeamNames}:{teams:string[], index:num
 
     return(
         <div className="team-name-select">
-            Player/Team {index+1}: <input id={'team-name-input'+theme} type="text" placeholder="Enter a team name" 
+            Player/Team {index+1}: <input id={'team-name-input'+theme} type="text" placeholder="Enter a team name" maxLength={30} 
             value = {teamName} onChange={e => setName(e.target.value)}></input>
         </div>
     )
