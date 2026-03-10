@@ -57,7 +57,7 @@ function MultiRoundGame() {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
     //Teams
-    const minTeams = 1; const maxTeams = 6
+    const minTeams = 1; const maxTeams = 7
     const [teamsAmt, setTeamsAmt] = useState(minTeams)
     const [teams, setTeams] = useState<Team[]>([])
     const [teamNames, setTeamNames] = useState<string[]>(new Array(maxTeams).fill(''))
