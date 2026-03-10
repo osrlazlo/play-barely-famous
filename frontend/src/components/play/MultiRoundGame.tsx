@@ -2,7 +2,7 @@ import { CategoryContext, ThemeContext } from "../../App";
 import React, { useContext, useEffect, useState, type ReactElement } from "react";
 import { getCategories } from "../../../../api/functions/getCategories";
 import { formatDateAdded } from "../CategoryCard";
-import type { GuessResult, Category, Team } from "./interfaces";
+import type { GuessResult, Category, Team } from "../interfaces";
 import "./game.css"
 import { checkGuess, createTeams, findWinnerIndex, getRandomInt, shuffleArray } from "./helpers";
 import SelectAmount from "./utils/SelectAmount";
@@ -11,60 +11,79 @@ import TopAnswers from "./TopAnswers";
 import ButtonWrapper from "./utils/ButtonWrapper";
 import Header from "../utils/Header";
 import ErrorBoundary from "../../ErrorBoundary";
+import Footer from "../utils/Footer";
+import ExtraSettings from "./ExtraSettings";
 
-export default function MultiRoundGame() {
+export default function MultiRoundGameWrapper() {
     return(
         <>
         <Header/>
         <div className="screen">
             <ErrorBoundary fallback="Failed to load categories">
-                <MultiRoundGameContainer/>
+                <MultiRoundGame/>
             </ErrorBoundary>
         </div>
+        <Footer/>
         </>
     )
 }
 
-function MultiRoundGameContainer() {
+function MultiRoundGame() {
 
-    const categoriesFromContext = useContext(CategoryContext)
-    const {setCategoriesStatus, status} = useContext(CategoryContext)
-    const [categories, setCategories] = useState([...categoriesFromContext.categories])
-    
-    const [randomCategories, setRandomCategories] = useState<Category[]>([])
+    //Game States
     const [isPlaying, setIsPlaying] = useState(false)
     const [isGameOver, setIsGameOver] = useState(false)
     const [isRoundOver, setIsRoundOver] = useState(false)
-    const [guesses, setGuesses] = useState<GuessResult[]>([])
-    const [guess, setGuess] = useState("")
-    const [errorMsg, setErrorMsg] = useState<ReactElement|null>(null)
     const [showTopAnswers, setShowTopAnswers] = useState(false)
 
-    const minGuess = 1; const maxGuess = 10
-    const [guessAmt, setGuessAmt] = useState(minGuess)
-    const [guessReset, setGuessReset] = useState(0)
-    const minTeams = 1; const maxTeams = 3
-    const [teamsAmt, setTeamsAmt] = useState(minTeams)
-    const minRounds = 1; const maxRounds = 3
-    const [roundsAmt, setRoundsAmt] = useState(minRounds)
-    const [currentRound, setCurrentRound] = useState(minRounds)
-    const [teams, setTeams] = useState<Team[]>([])
-    const [currentTeam, setCurrentTeam] = useState(0)
+    //Categories
+    const categoriesFromContext = useContext(CategoryContext)
+    const [categories, setCategories] = useState([...categoriesFromContext.categories])
+    const [randomCategories, setRandomCategories] = useState<Category[]>([])
     const [currentCategory, setCurrentCategory] = useState(0)
 
+    //Guess
+    const minGuess = 1; const maxGuess = 10
+    const [guessAmt, setGuessAmt] = useState(4)
+    const [guessReset, setGuessReset] = useState(0)
+    const [guesses, setGuesses] = useState<GuessResult[]>([])
+    const [guess, setGuess] = useState("")
+
+    //Rounds
+    const minRounds = 1; const maxRounds = categories && categories.length > 10 ? 10:categories.length
+    const [roundsAmt, setRoundsAmt] = useState(minRounds)
+    const [currentRound, setCurrentRound] = useState(minRounds)
+    
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+
+    //Teams
+    const minTeams = 1; const maxTeams = 7
+    const [teamsAmt, setTeamsAmt] = useState(minTeams)
+    const [teams, setTeams] = useState<Team[]>([])
+    const [teamNames, setTeamNames] = useState<string[]>(new Array(maxTeams).fill(''))
+    const [currentTeam, setCurrentTeam] = useState(0)
+
+    //Errors
+    const [error, setError] = useState<Error|null>(null)
+    const [errorMsg, setErrorMsg] = useState<ReactElement|null>(null)
+   
     //load categories if not loaded yet
     useEffect(() => {
         async function loadCategories() {
             const res = await getCategories()
-            if (res.status == 200) {
-              setCategories(res.data)
-            }
-            setCategoriesStatus(res.status)
+            try {
+                if (res.status == 200) {
+                    let categories = res.data.categories as Category[]
+                    setCategories(categories)
+                } 
+                else setError(new Error(`{"status": "${res.status}", "msg": "${res.msg}"}`)) 
+                
+            } catch (error) {
+                setError(error as Error)
+            } 
         }
-        if (categories.length < 1) loadCategories()
+        if (!(categories.length > 0)) loadCategories()
     },[])
-
-    if (status != 200) throw new Error("failed to load categories")
 
     useEffect(() => {
         if (guessAmt == 0) {
@@ -84,7 +103,7 @@ function MultiRoundGameContainer() {
             let randomCategories = getGandomCategories()
             //console.log("random",randomCategories)
             setRandomCategories(randomCategories)
-            let teams = createTeams(teamsAmt)
+            let teams = createTeams(teamsAmt, teamNames)
             setTeams(teams)
             setGuessReset(guessAmt*teamsAmt)
             teams[0].isCurrentTeam = true
@@ -145,6 +164,7 @@ function MultiRoundGameContainer() {
             setIsRoundOver(false)
             setCurrentRound(r => r+1)
             setCurrentCategory(c => c+1)
+            setGuesses([])
             teams.map(t => 
                 {t.score = t.score
                 t.guesses = []})
@@ -155,14 +175,23 @@ function MultiRoundGameContainer() {
     //select random category
         function getGandomCategories() {
             let randomCategories:Category[] = []
-            let choseFrom = [...categories]
+            
+            if (selectedCategories.length > 0)
+                selectedCategories.map(id => randomCategories.push(categories.find(c => String(c.id) == id)!))
+            let remaining = roundsAmt-randomCategories.length
+            let choseFrom = [...categories].filter(c => !selectedCategories.includes(String(c.id)))
+            // console.log('chosefrom', choseFrom)
+
             shuffleArray(choseFrom)
-            for (let i=0; i<roundsAmt; i++) {
-                let randomIndex = getRandomInt(0,choseFrom.length)
-                randomCategories.push(choseFrom[randomIndex])
-                choseFrom = (choseFrom.filter(unselected => !randomCategories.find(selected => unselected.id == selected.id))
-                )
-            }
+            
+            if (randomCategories.length < roundsAmt)
+                for (let i=0; i<remaining; i++) {
+                    let randomIndex = getRandomInt(0, choseFrom.length)
+                    randomCategories.push(choseFrom[randomIndex])
+                    choseFrom = (choseFrom.filter(unselected => !randomCategories.find(selected => unselected.id == selected.id))
+                    )
+                }
+            // console.log('randomcats', randomCategories)
             return randomCategories
         }
 
@@ -171,9 +200,10 @@ function MultiRoundGameContainer() {
         }
 
         const {theme} = useContext(ThemeContext)
-    return(
-        <div className="screen">
-        
+        //console.log('team names:',teamNames)
+
+    if (error) throw error
+    return(        
         <div className="game-screen">
             
             { !isPlaying && categories ?
@@ -182,24 +212,34 @@ function MultiRoundGameContainer() {
                     <SelectAmount name="players/teams" value={teamsAmt} min={minTeams} max={maxTeams} setValue={setTeamsAmt}/>
                     <SelectAmount name="rounds" value={roundsAmt} min={minRounds} max={maxRounds} setValue={setRoundsAmt}/>
                     <SelectAmount name="guesses (per round, per team)" value={guessAmt} min={minGuess} max={maxGuess} setValue={setGuessAmt}/>
+                    
                     <ButtonWrapper>
                         <button className="start-game-button"
                         onClick={() => startGame()}>START GAME</button>     
                     </ButtonWrapper>
-                             
                 </div>
-                <Hints/> 
+                <ExtraSettings
+                    //choose categories
+                    selectedCategories={selectedCategories}
+                    setSelectedCategories={setSelectedCategories}
+                    roundsAmt={roundsAmt}
+
+                    //change team names
+                    teamNames={teamNames}
+                    teamsAmt={teamsAmt}
+                    setTeamNames={setTeamNames}
+                />  
                 </div>:"" }
 
             { isPlaying && randomCategories[currentCategory] ? 
                 <div className="guesses-container">
                     <div className="full-header">
-                        <div className="game-header">
+                        <div className="multi-game-header">
                             <div className="rounds">Round {currentRound}/{roundsAmt}</div>
                             <div className="category">
                                 <div className="title">{randomCategories[currentCategory].name}</div>
                                 <div className="source">Source: {randomCategories[currentCategory].source}</div>
-                                <div className="updated">Updated: {formatDateAdded(randomCategories[currentCategory].dateAdded)}</div>
+                                <div className="updated">Updated: {formatDateAdded(randomCategories[currentCategory].dateUpdated)}</div>
                             </div>
                             <div className="guess-remaining">
                                 <div className={"num" + theme}> {Math.ceil(guessAmt/teamsAmt)}</div> guess(es) left</div>
@@ -235,11 +275,10 @@ function MultiRoundGameContainer() {
                     </div>
                     <div className="teams-container">
                         {teams?.map(t => 
-                            <TeamCard key={t.name} team={t} n={teamsAmt} theme={theme}/>
+                            <TeamCard key={t.name} team={t} n={teamsAmt}/>
                         )}
                     </div>
                 </div>:""}
-        </div>
         </div>
     )
 }
@@ -280,42 +319,4 @@ export function ErrorMsg({guess}:ErrorMsgProps) {
             <br/>You may need to try again with more precision</p>
         </div>
     )
-}
-
-export function Hints() {
-    const {theme} = useContext(ThemeContext)
-    return(
-        <div className="hints">
-            <p id="section-title">Some notes and hints</p>
-            <div>
-                <p>Be as precise as possible. Guesses are case insensitive.</p> 
-                <p className="subtitle">Some small typos/imprecisions are acceptable, for example:</p>
-                    <GuessExample guess="spderman" match="Spider-Man" isMatch={true}/>
-                    <GuessExample guess="atnt" match="AT&T" isMatch={true}/>
-
-                <p className="subtitle">Subtitles may be recognized but it is better to guess the full name, for example:</p>
-                    <GuessExample guess="endgame" match="Avengers: Endgame" isMatch={true}/>
-                    <GuessExample guess="the way of water" match="Avatar: The Way of Water" isMatch={true}/>
-                
-                <p className="subtitle">You must be specific with numbered items, for example:</p>
-                    <GuessExample guess="spiderman" match="Spider-Man" isMatch={true}/>
-                    <GuessExample guess="spiderman" match="Spider-Man 2" isMatch={false}/>
-
-                <p className="subtitle">For some categories, if your guess is <span className={"example" + theme}>wrong but within the top 110,</span> the rank will be given as a hint</p>
-            </div>
-        </div>
-    )
-}
-
-interface GuessExampleProps {
-    guess:string
-    match:string
-    isMatch:boolean
-}
-function GuessExample({guess,match,isMatch}:GuessExampleProps) {
-    const {theme} = useContext(ThemeContext)
-    return(
-        <p><span className={"example" + theme}>"{guess}"</span> {isMatch ? "will":"will NOT"} match <span className={"example" + theme}>"{match}"</span></p>
-    )
-
 }

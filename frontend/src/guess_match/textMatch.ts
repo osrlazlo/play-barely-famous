@@ -2,6 +2,13 @@ import { getNumbers, romanToInt } from "./digitsMatch.ts"
 import { PASS_THRESHOLD, wordMatch } from "./wordMatch.ts"
 
 export function textMatch(guess:string, match:string, isSpecifier?:boolean) {
+    let t1 = textMatchHandler(guess, match, isSpecifier)
+    let t2 = textMatchHandler(match, guess, isSpecifier)
+    let avg = (t1+t2)/2
+    return avg
+}
+
+export function textMatchHandler(guess:string, match:string, isSpecifier?:boolean) {
     let textMatchPercentage = 0
     let attempt2 = 0
     guess = guess.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -169,7 +176,7 @@ function textMatchHelper(guessText:string[], matchText:string[], isSpecifier?:bo
             default: textMatchPercentage *= 0.90
         }
     if (textMatchPercentage > 1) textMatchPercentage = Math.floor(textMatchPercentage)
-    //console.log("ratio", matchRatio)
+    //console.log("txt ratio", matchRatio)
         
     let final = 0
         

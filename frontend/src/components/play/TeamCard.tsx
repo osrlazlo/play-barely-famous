@@ -1,14 +1,17 @@
 import { FaTrophy } from "react-icons/fa";
-import type { Team } from "./interfaces";
+import type { Team } from "../interfaces";
 import PreviousGuesses from "./PreviousGuess";
+import { useContext, useState } from "react";
+import './teams.css'
+import { ThemeContext } from "../../App";
 
 interface TeamCardProps {
     team:Team
     n:number
-    theme:string
 }
 
-export default function TeamCard({team, n, theme}:TeamCardProps) {
+export default function TeamCard({team, n}:TeamCardProps) {
+    const {theme} = useContext(ThemeContext)
     return(
         <div className={`
                 ${"team-card" + theme} 

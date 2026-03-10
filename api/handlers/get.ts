@@ -15,7 +15,7 @@ export default async function handler(req:Request, res:Response) {
     try {
         const categories = await db.collection(COL_CATEGORIES).find({next_category_id:{$exists:false}}).toArray()
         if (categories.length < 1) return res.status(404).json({msg: 'Categories not found'})
-        return res.status(200).json(categories)
+        return res.status(200).json({categories})
 
     } catch (error) {
         console.error(error)

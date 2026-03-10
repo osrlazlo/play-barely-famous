@@ -1,10 +1,11 @@
 import Papa from "papaparse"
+import type { CategoryElement } from "../../frontend/src/components/interfaces.ts"
 const API_PATH = import.meta.env.VITE_API_PATH
 
-export async function handleAddCategory(name:string, file:File, source:string, password:string) {
-    if (!name || !file || !source || !password) return
-    console.log(file)
-    const data = await parseCSVtoJSON(file)
+export async function handleAddCategory(name:string, file:File, source:string, password:string, tags:string) {
+    if (!name || !file || !source || !password || !tags) return
+    //console.log(file)
+    const data = await parseCSVtoJSON(file) as CategoryElement[]
     console.log("data", data)
 
     const options = {
@@ -15,6 +16,7 @@ export async function handleAddCategory(name:string, file:File, source:string, p
             data,
             source,
             password,
+            tags,
     })}
     
     const res = await fetch(`${API_PATH}/add`, options)

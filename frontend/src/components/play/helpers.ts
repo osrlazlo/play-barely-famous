@@ -1,5 +1,5 @@
 import { isMatch } from "../../guess_match/guessMatch"
-import type { Category, CategoryElement, GuessResult, Team } from "./interfaces"
+import type { Category, CategoryElement, GuessResult, Team } from "../interfaces"
 
 export function checkGuess(guess:string, category:Category) {
     if (!category) return
@@ -50,10 +50,11 @@ export function shuffleArray(array:Object[]) {
     }
 }
 
-export function createTeams(amt:number) {
+export function createTeams(amt:number, teamNames:string[]) {
     let teams:Team[] = []
     for (let i=0; i<amt; i++) {
-        teams.push({name:`Team${i+1}`, guesses:[], score:0, isCurrentTeam:false, isWinner:false})
+        let name = teamNames[i] ? teamNames[i]:`Team ${i+1}`
+        teams.push({name, guesses:[], score:0, isCurrentTeam:false, isWinner:false})
     }
     return teams
 }

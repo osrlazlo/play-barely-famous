@@ -17,7 +17,8 @@ export interface Category {
     plays:number|string
     data:CategoryElement[]
     source:string
-    dateAdded:string|Date
+    dateUpdated:string|Date
+    tags?:string[]
 }
 
 export interface Team {
@@ -26,4 +27,23 @@ export interface Team {
     score:number
     isCurrentTeam:boolean
     isWinner:boolean
+}
+
+export class Player {
+    name:string
+    guesses:GuessResult[]
+    score:number
+    isCurrentTeam:boolean
+    isWinner:boolean
+    constructor(name:string|undefined) {
+        this.name = name ? name:'Team'
+        this.guesses = []
+        this.score = 0
+        this.isCurrentTeam = false
+        this.isWinner = false
+    }
+
+    setName(name:string) {
+        this.name = name
+    }
 }

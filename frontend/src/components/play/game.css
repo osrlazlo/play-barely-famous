@@ -57,50 +57,20 @@
     justify-content: right;
 }
 
-.teams-container {
-    display: flex;
-    width: 90vw;
-    gap: 15px;
-    justify-items: center;
-    justify-content: center;
-    animation: fadeIn 0.5s ease-in-out;
-    margin-top: 35px;
-}
-
-.team-card, .team-card-light {
+.quick-game-guesses, .quick-game-guesses-light {
     border: 3px solid white;
     border-radius: 15px;
     padding: 0px 10px;
     max-width: 500px;
+    width: 80vw;
     transition: all 0.3s ease-in-out;
     margin-top: 15px;
     background-color: rgb(56, 56, 56);
 }
 
-.team-card-light {
+.quick-game-guesses-light {
     border-color: black;
     background-color: white;
-}
-
-.teams-1 {
-    width: 100%;
-    min-width: 300px;
-}
-.teams-2 {
-    width: 45vw;
-    min-width: 250px;
-}
-.teams-3 {
-    width: 27vw;
-    min-width: 200px;
-}
-
-.team-card .score {
-    font-weight: bolder;
-    font-size: xx-large;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .guesses-container .score {
@@ -110,49 +80,6 @@
     align-items: center;
     justify-content: center;
     margin: 25px;
-}
-
-.current-team {
-    border-color: #646cff;
-    transform: scale(1.1);
-    margin: 0px 15px;
-    box-shadow: 0px 0px 8px hsl(237, 100%, 80%);
-}
-
-.winning-team, .winning-team-light {
-    border-color: goldenrod;
-    transform: scale(1.05);
-    margin: 0px 15px;
-    box-shadow: 0px 0px 20px goldenrod
-}
-
-.winning-team .score {
-    color: gold;
-    gap: 10px;
-}
-
-.winning-team-light .score {
-    color: goldenrod;
-    gap: 10px;
-}
-
-.screen {
-    box-sizing: border-box;
-    width: 90vw;
-    width: 100vw;
-    min-height: 100vh;
-    padding: 60px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.game-screen {
-    animation: fadeIn 0.1s ease-in;
-    margin-top: 30px;
-    min-height: 100vh;
 }
 
 .guesses-container {
@@ -220,6 +147,19 @@
 
 .game-header {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+    font-size: x-large;
+    padding: 20px;
+    border:3px solid rgb(150, 150, 150);
+    border-radius: 25px;
+    flex-wrap: wrap;
+    max-width: 800px;
+}
+
+.multi-game-header {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -228,12 +168,13 @@
     padding: 20px;
     border:3px solid rgb(150, 150, 150);
     border-radius: 25px;
+    flex-wrap: wrap;
+    max-width: 800px;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 950px) {
     .game-header {
         max-width: 500px;
-        height: 250px;
     }
 }
 
@@ -322,48 +263,3 @@
 #input-error input {
     border-color: rgb(255, 72, 72);
 }
-
-.hints {
-    border: 3px solid rgb(151, 151, 151);
-    font-size: larger;
-    margin-top: 15px;
-    padding: 10px 20px;
-    border-radius: 25px;
-    max-width: 600px;
-    scale: 0.9;
-}
-
-.hints p {
-    margin: 5px 0px;
-}
-
-.hints .subtitle {
-    font-weight: bold;
-    margin-top: 35px;
-}
-
-.hints #section-title {
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: x-large;
-}
-
-.hints .example {
-    font-weight: bold;
-    color: rgb(255, 138, 138);
-}
-
-.hints .example-light {
-    font-weight: bold;
-    color: rgb(255, 68, 35);
-}
-
-.select-and-hints {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-    margin-top: 50px;
-}
-

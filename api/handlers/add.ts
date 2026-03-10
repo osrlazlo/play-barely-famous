@@ -2,7 +2,16 @@ import { Request, Response } from "express";
 import { setCORSHeaders } from "../helpers.js";
 import mongodb, { COL_CATEGORIES } from "../mongodbClient.js";
 import bcrypt from "bcryptjs";
+import type { CategoryElement } from "../../frontend/src/components/interfaces.ts"
 import { Condition, ObjectId } from "mongodb";
+
+interface AddReqBody {
+    name:string
+    data: CategoryElement[]
+    source: string
+    password: string
+    tags: string
+}
 
 export default async function handler(req:Request, res:Response) {
     setCORSHeaders(res)
@@ -16,8 +25,8 @@ export default async function handler(req:Request, res:Response) {
     
     try {
        
-       const {name, data, source, password} = req.body
-
+        const {name, data, source, password, tags} = req.body as AddReqBody
+        const tagsArray = tags.split(',').map(s => s.trim()) 
         /* 
         const hash = await bcrypt.hash(password,10)
         const admin = {
@@ -36,28 +45,42 @@ export default async function handler(req:Request, res:Response) {
         if (!isCorrectPassword) return res.status(401).json({msg: 'Incorrect password'})
 
         const categoryExists = await db.collection(COL_CATEGORIES).findOne({name: name})
-        if (categoryExists) return res.status(409).json({msg: 'Category already exsists'})
+        if (categoryExists) {
 
-        const id = await db.collection(COL_CATEGORIES).findOne({next_category_id: {$exists:true}})
-        if (!id) throw new Error()
-        const updateID = await db.collection(COL_CATEGORIES).updateOne({_id: id._id}, {$set:{next_category_id:Number(id.next_category_id)+1}})
-        if (!updateID.acknowledged) throw new Error()
+            const updtDate = new Date()
+            const updateCat = await db.collection(COL_CATEGORIES).updateOne({_id: categoryExists._id}, {$set:{data: data, dateUpdated: updtDate}})
+            
+            if (!updateCat.acknowledged) throw new Error()
+            else return res.status(200).json({updateCat, msg: 'Category updated'})  
 
-        const mongoCategory = {
-            id: Number(id.next_category_id),
-            name, 
-            data,
-            source,
-            plays: Number(0),
-            dateAdded: new Date()
+        } else {
+        
+            const id = await db.collection(COL_CATEGORIES).findOne({next_category_id: {$exists:true}})
+            if (!id) throw new Error()
+            const updateID = await db.collection(COL_CATEGORIES).updateOne({_id: id._id}, {$set:{next_category_id:Number(id.next_category_id)+1}})
+
+            if (!updateID.acknowledged) throw new Error()
+
+            const mongoCategory = {
+                id: Number(id.next_category_id),
+                name, 
+                data,
+                source,
+                plays: Number(0),
+                dateUpdated: new Date(),
+                tags: tagsArray,
+            }
+
+            let addCategory = await db.collection(COL_CATEGORIES).insertOne(mongoCategory)
+            return res.status(200).json({addCategory, msg: 'New category created'})  
         }
 
-        let addCategory = await db.collection(COL_CATEGORIES).insertOne(mongoCategory)
-        return res.status(200).json({addCategory, msg: 'New category created'})
+
         
     } catch (error) {
         mongodb.closeConnection()
-        return res.status(500).json({msg: 'An error occured'})
+        let err = error as Error
+        return res.status(500).json({msg: `An error occured: ${err.message}`})
     }
 }
 

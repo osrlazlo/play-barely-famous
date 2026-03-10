@@ -1,0 +1,202 @@
+#extra-settings {
+    display: grid;
+    grid-template-rows: 1fr 7fr;
+    border: 3px solid rgb(151, 151, 151);
+    border-radius: 25px;
+    width: 600px;
+    height: 700px;
+    max-height: 600px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#settings-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: scroll;
+    box-sizing: border-box;
+    padding: 5px 5px 20px 5px;
+}
+
+#settings-container p {
+    font-size: large;
+    font-weight: 600;
+}
+
+#settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    gap: 3px;
+    background-color: rgb(151, 151, 151);
+    padding-bottom: 3px;
+}
+
+#header-buttons, #header-buttons-light, #current-setting, #current-setting-light {
+    padding: 5px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer; 
+    background-color: hsl(0, 0%, 24%);
+    font-weight: bold;
+
+}
+
+#header-buttons-light, #current-setting-light {
+    background-color: white;
+}
+
+#header-buttons:hover, #header-buttons-light:hover {
+    background-color: lightgray;
+    color: black;
+}
+
+#current-setting, #current-setting:hover, #current-setting-light, #current-setting-light:hover  {
+    cursor: default;
+    background-color: rgb(35, 112, 255);
+    color: white;
+    font-weight: bold;
+}
+
+.hints {
+    font-size: larger;
+    padding: 10px 20px;
+    max-width: 600px;
+    scale: 0.9;
+}
+
+.hints p {
+    margin: 5px 0px;
+}
+
+.hints .subtitle {
+    font-weight: bold;
+    margin-top: 35px;
+}
+
+.hints #section-title {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.hints .example {
+    font-weight: bold;
+    color: rgb(255, 138, 138);
+}
+
+.hints .example-light {
+    font-weight: bold;
+    color: rgb(255, 68, 35);
+}
+
+.select-and-hints {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+/* team names*/
+.team-name-select {
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 5px;
+    font-weight: bold;
+}
+
+#team-name-input, #team-name-input-light {
+    font-style: italic;
+    font-weight: normal;
+    padding: 2px;
+    background-color: unset;
+    height: 30px;
+    border-radius: 15px;
+    color: white;
+    padding-left: 15px;
+    background-color: hsl(0, 0%, 13%);
+}
+
+#team-name-input-light {
+    color: black;
+    background-color: hsl(0, 0%, 93%);
+}
+
+/* select categories*/
+.selected-item {
+    border-radius: 10px;
+    background-color: rgb(35, 112, 255);
+    color: white;
+    box-sizing: border-box;
+    font-size: smaller;
+    font-weight: 700;
+    padding: 2px 15px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.selected-item:hover {
+    background-color: hsl(219, 100%, 67%);
+}
+
+.category-select-item, .category-select-item-light {
+    border-radius: 10px;
+    background-color: rgb(27, 27, 27);
+    border: 1px solid rgb(99, 99, 99);
+    color: white;
+    box-sizing: border-box;
+    font-weight: 600;
+    padding: 2px 15px;
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    transition: all 0.1s ease-in-out;
+}
+
+.category-select-item-light {
+    background-color: rgb(248, 248, 248);
+    border: 1px solid rgb(99, 99, 99);
+    color: black; 
+}
+
+.category-select-item:hover {
+    background-color: hsl(0, 0%, 17%);
+}
+
+.category-select-item-light:hover {
+    background-color: hsl(0, 0%, 87%);
+}
+
+.category-select-item label, .category-select-item-light label {
+    cursor: pointer;
+}
+
+.selected-categories {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.categories-list {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}

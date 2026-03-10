@@ -6,6 +6,8 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     color: white;
     text-decoration: none;
     gap: 5px;
@@ -18,6 +20,7 @@
     height: fit-content;
     background-color: rgb(43, 43, 43);
     transition: background-color 0.6s ease-in-out;
+    transition: transform 0.1s ease-in-out;
 }
 
 .category-card-light {
@@ -46,13 +49,73 @@
 .category-card:hover, .category-card-light:hover {
     cursor: pointer;
     transform: scale(1.05);
-    transition: scale 0.3s ease-in-out;
 }
 
 .categories {
     display: flex;
     flex-wrap: wrap;
-    width: 80vw;
+    width: 90vw;
     align-items: center;
     justify-content: center;
+}
+
+.tag {
+    border: 2px solid rgb(35, 112, 255);
+    background-color: rgb(35, 112, 255);
+    border-radius: 5px;
+    height: 25px;
+    width: fit-content;
+    box-sizing: border-box;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: white;
+}
+
+.tags {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 80%;
+    flex-wrap: wrap;
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.filters .tags {
+    width: fit-content;
+}
+
+.reset-filters-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: larger;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.reset-filters-button:hover {
+    color: gold;
+    transform: scale(1.05);
+}
+
+.filter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.filter label {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
 }
